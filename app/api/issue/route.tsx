@@ -7,9 +7,19 @@ export const GET = async (request: Request) => {
     console.log("searchParams", searchParams);
     const code = searchParams.get('code')
 
-    //未測試
+    // get the token
     const param = "client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&code=" + code;
-    await fetch("https://api.github.com/"+param)
-    .then(res => res.json())
-    .then(data => {Response.json({data})})
+    console.log("param", param);
+    const res = await fetch("https://github.com/login/oauth/access_token?"+param, 
+                    {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    
+                    })
+    const data = await res.json()
+
+
+    return Response.json(data.access_token)
 }; 
