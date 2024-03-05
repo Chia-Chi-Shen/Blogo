@@ -2,77 +2,56 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
-import { Octokit, RequestError } from "octokit";
 import ListElement from "@/components/listElement";
+import { useToken } from "@/containers/hook/useToken";
 
-
-const CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
+type issueElement = {
+  title: string;
+  number: number;
+}
 
 export default function Home() {
-  const router = useRouter();
-  const octokit = new Octokit();
+  // const octokit = new Octokit();
   const searchParams = useSearchParams();
+  const [titleAndNumber, setTitleAndNumber] = useState([] as issueElement[]);
+  const [isEnd, setIsEnd] = useState(false);
+  const { setCode } = useToken();
 
-  const [nextUrl, setNextUrl] = useState("/repos/curl/curl/issues");
-  const [titleAndAuthor, setTitleAndAuthor] = useState([] as {title: string, authorID: string}[]);
-
-  const loginWithGithub = () => {
-    router.push("https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID);
+  const getInitIssues = async (titleAndNumber: issueElement[], isFirst: boolean) => {
+    const res = await fetch(`/api/issueList?repo=chia-chi-shen/test&isfirst=${isFirst}`);
+    const { newTitleAndNumber, isEnd } = await res.json();
+    setIsEnd(isEnd);
+    setTitleAndNumber([...titleAndNumber, ...newTitleAndNumber])
+    console.log("issues: ", newTitleAndNumber);
+    // setNextUrl(nextUrl);
   }
-  
-  const getInitIssues = async (url:string) => {
-    if (url !== "") 
-    try {
-      const result = await octokit.request(`GET ${url}`, {
-        per_page: 10,
-      });
-      const newTitleAndAuthor = result.data.map((issue:any) => ({title: issue.title, 
-                                                                  authorID: issue.user ? issue.user.id : null}))
-      setTitleAndAuthor([...titleAndAuthor, ...newTitleAndAuthor])
-      console.log("newTitleAndAuthor: ",newTitleAndAuthor)
-      const linkHeader = result.headers.link;
-      const nextPattern = /(?<=<)([\S]*)(?=>; rel="Next")/i;
-      setNextUrl(linkHeader?.match(nextPattern)?.[0] ?? "");
-
-      // console.log("linkHeader: ",linkHeader)
-      // console.log(titleAndAuthor)
-      // console.log("nextLink: ",nextUrl)
-    
-    } catch (error: any) {
-      console.log(`Error! Status: ${error.status}. Message: ${error.response.data.message}`)
-    }
-
-  };
-  
 
   useEffect(() => {
     const code = searchParams.get("code");
-    if (code) {
-      console.log("code", code);
-    }
-
-    getInitIssues(nextUrl);
+    if (code) 
+      setCode(code);
+    getInitIssues(titleAndNumber, true);
   },[]);
 
   useEffect(() => {
-    
-    const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-        getInitIssues(nextUrl);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => window.removeEventListener('scroll', handleScroll);
-    
-  } ,[nextUrl]);    
+    if (!isEnd)
+    {
+      const handleScroll = () => {
+        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+          getInitIssues(titleAndNumber, false);
+          console.log("isEnd: ", isEnd)
+        }
+      };
+  
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  } ,[titleAndNumber]);    
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 gap-3">
-      <button onClick={loginWithGithub} className="bg-black text-white p-4 rounded-md">Login with Github</button>
-        {titleAndAuthor.map((issue, index) => (
-          <ListElement key={index} title={issue.title} />
+    <main className="flex min-h-screen flex-col items-center justify-start p-24 gap-3">
+        {titleAndNumber.map((issue, index) => (
+          <ListElement key={index} title={issue.title} number={issue.number}/>
         ))}
     </main>
   );

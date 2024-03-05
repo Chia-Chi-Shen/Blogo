@@ -1,25 +1,67 @@
-const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
-const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+import { Octokit } from "octokit"
 
-export const GET = async (request: Request) => {
-    console.log("request", request);
-    const { searchParams } = new URL(request.url)
-    console.log("searchParams", searchParams);
-    const code = searchParams.get('code')
+type Comment = {
+    user: string, 
+    body: string, 
+    updated_at: string
+};
 
-    // get the token
-    const param = "client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&code=" + code;
-    console.log("param", param);
-    const res = await fetch("https://github.com/login/oauth/access_token?"+param, 
-                    {
-                        method: "POST",
-                        headers: {
-                            "Accept": "application/json"
-                        }
-                    
-                    })
-    const data = await res.json()
+export const GET =  async (request: Request) => {
+    const { searchParams } = new URL(request.url);
+    const { headers } = request;
 
+    const issue_number = searchParams.get("issue_number");
+    const owner = searchParams.get("owner");
+    const repo = searchParams.get("repo");
+    const parse = searchParams.get("parse");
+    
 
-    return Response.json(data.access_token)
-}; 
+    if ( issue_number && owner && repo) {
+
+    const octokit = new Octokit({ auth: headers.get('authorization')});
+
+    const { data: issueResult } = await octokit.request('GET /repos/{owner}/{repo}/issues/{issue_number}', {
+        owner: owner,
+        repo: repo,
+        issue_number: Number(issue_number),
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
+    // console.log(issueResult);
+
+    let issueBody = "";
+    if (issueResult.body) {
+        if (parse === "true") {
+        ({ data: issueBody } = await octokit.request('POST /markdown', {
+        text: issueResult.body,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+        }))
+        }
+        else 
+            issueBody = issueResult.body;
+    }
+
+    const issue = {
+            title: issueResult.title, 
+            body: issueBody, 
+            updated_at: issueResult.updated_at
+        };
+    const { data: commentsResult } = await octokit.request(`GET ${issueResult.comments_url}`);
+    const comments:Comment[] = commentsResult.map(
+        (comment: { 
+            user: { login: string }, 
+            body: string, 
+            updated_at: string 
+        }) => ({
+            user: comment.user.login, 
+            body: comment.body, 
+            updated_at: comment.updated_at 
+        }));
+
+    return Response.json({ issue, comments });
+    }
+
+}
