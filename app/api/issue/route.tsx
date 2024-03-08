@@ -65,3 +65,73 @@ export const GET =  async (request: Request) => {
     }
 
 }
+
+export const POST = async (request: Request) => {
+    const { searchParams } = new URL(request.url);
+    const { headers } = request;
+    const { title, body } = await request.json();
+
+    const owner = searchParams.get("owner")?? "chia-chi-shen";
+    const repo = searchParams.get("repo")?? "test";
+
+    const octokit = new Octokit({ auth: headers.get('authorization')});
+    const { data: { number } } = await octokit.request('POST /repos/{owner}/{repo}/issues', {
+        owner,
+        repo,
+        title,
+        body,
+        headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+        }
+        })
+    return Response.json(number);
+    
+}
+
+
+export const PATCH = async (request: Request) => {
+    const { searchParams } = new URL(request.url);
+    const { headers } = request;
+    const { title, body } = await request.json();
+
+    const issue_number = searchParams.get("issue_number");
+    const owner = searchParams.get("owner")?? "chia-chi-shen";
+    const repo = searchParams.get("repo")?? "test";
+
+    if ( issue_number ) {
+        const octokit = new Octokit({ auth: headers.get('authorization')});
+        const { data: { number } } = await octokit.request('PATCH /repos/{owner}/{repo}/issues/{issue_number}', {
+            owner,
+            repo,
+            issue_number: Number(issue_number),
+            title,
+            body,
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          })
+        return Response.json(number);
+    }
+}
+
+export const DELETE = async (request: Request) => {
+    const { searchParams } = new URL(request.url);
+    const { headers } = request;
+    const issue_number = searchParams.get("issue_number");
+    const owner = searchParams.get("owner")?? "chia-chi-shen";
+    const repo = searchParams.get("repo")?? "test";
+
+    if ( issue_number ) {
+        const octokit = new Octokit({ auth: headers.get('authorization')});
+        await octokit.request('PATCH /repos/{owner}/{repo}/issues/{issue_number}', {
+            owner,
+            repo,
+            issue_number: Number(issue_number),
+            state: "closed",
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          })
+        return Response.json(issue_number);
+    }
+}

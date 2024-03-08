@@ -1,12 +1,14 @@
 'use client'
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useToken } from "@/containers/hook/useToken";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
 const Navbar = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { token, user } = useToken();
     const loginWithGithub = () => {
         router.push("https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID + "&scope=repo");
       }
@@ -23,12 +25,16 @@ const Navbar = () => {
         <div className="flex justify-end gap-x-9 items-center">
         <nav className="">
             <ul className="flex gap-x-4 w-[250px] justify-end items-center">
-            <li><a href="#">home</a></li>
+            <li><a href="/">home</a></li>
             </ul>
         </nav>
         { 
-            searchParams.get("code")? 
-            <a href="/login" className="profile rounded-full bg-sky-300 w-6 h-6"></a> :
+            token? 
+            <div className="flex gap-3 items-center">
+                <div>{user}</div>
+                <a href="/login" className="profile rounded-full bg-sky-300 w-6 h-6"></a>
+            </div>
+             :
             <button onClick={loginWithGithub} className="bg-black text-white p-4 rounded-md">Login with Github</button>
         }
         </div>

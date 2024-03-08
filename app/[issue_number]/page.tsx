@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import parse from "html-react-parser";
 import { useToken } from "@/containers/hook/useToken";
 
@@ -19,10 +19,21 @@ export default function Page({ params }: { params: { issue_number: string } }) {
     
     const [issue, setIssue] = useState({title: "", body: "", updated_at: ""} as Issue);
     const [comments, setComments] = useState([] as Comment[]);
+    const router = useRouter();
+    const pathName = usePathname();
     const searchParams = useSearchParams();
     const owner = searchParams.get('owner')?? "chia-chi-shen";
     const repo = searchParams.get('repo')?? "test";
     const { token } = useToken();
+    
+    useEffect(() => {
+        // if navigate to /createIssue, redirect to home page
+        console.log("pathName: ", pathName);
+        if (pathName === "/createIssue") {
+            router.push("/");
+        }
+        
+      }, [pathName])
 
     useEffect(() => { 
         const getIssue = async () => {
@@ -36,13 +47,33 @@ export default function Page({ params }: { params: { issue_number: string } }) {
     }
     ,[]);
 
+    const deleteIssue = async() => {
+        const result = await fetch(
+            `/api/issue?owner=${owner}&repo=${repo}&issue_number=${params.issue_number}`, {
+            method: 'DELETE',
+            headers: {
+                'authorization': token
+            }
+        });
+        const number = await result.json();
+        router.push("/");
+    }
+
     return (
         <div className="prose">
             <h1>{searchParams.get("title")}</h1>
             {
                 token?
-                <a href={`${params.issue_number}/updateIssue?owner=${owner}&repo=${repo}`} 
-                className="bg-slate-600 px-4 text-white">edit</a>:
+                <div>
+                    <a 
+                        href={`${params.issue_number}/updateIssue?owner=${owner}&repo=${repo}`} 
+                        className="bg-slate-600 px-4 text-white">edit</a>
+                    <button 
+                        onClick={deleteIssue}
+                        className="bg-slate-600 px-4 text-white"
+                        >delete</button>
+                </div>
+                :
                 <></>
             }
             {parse(issue.body)}

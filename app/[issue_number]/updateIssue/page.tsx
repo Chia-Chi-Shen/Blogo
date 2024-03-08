@@ -3,19 +3,16 @@
 'use client'
 import { Octokit } from "octokit";
 import { useToken } from "@/containers/hook/useToken";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UpdateIssue( { params }: { params: { issue_number: string } }) {
     const [issue, setIssue] = useState({title: "", body: ""});
-    const { token, user } = useToken();
+    const { token, user, authorizedOctokit } = useToken();
+    const router = useRouter();
     const searchParams = useSearchParams();
     const owner = searchParams.get('owner')?? "chia-chi-shen";
     const repo = searchParams.get('repo')?? "test";
-
-    const authorizedOctokit = new Octokit({
-        auth: token
-    }); 
 
     useEffect(() => {
         const getIssue = async () => {
@@ -29,32 +26,28 @@ export default function UpdateIssue( { params }: { params: { issue_number: strin
         getIssue();
     },[]);
 
-    const postIssue = async() => {
+    const updateIssue = async() => {
         const title = (document.getElementById('title') as HTMLInputElement).value;
         const body = (document.getElementById('body') as HTMLTextAreaElement).value;
-        console.log("title: ", title, "body: ", body);
 
         if (title && body) {
-            const result = await authorizedOctokit.request('PATCH /repos/{owner}/{repo}/issues/{issue_number}', {
-                owner: searchParams.get('owner')?? "chia-chi-shen",
-                repo: searchParams.get('repo')?? "test",
-                title: title,
-                body: body,
-                issue_number: Number(params.issue_number),
+            const result = await fetch(`/api/issue?owner=${owner}&repo=${repo}&issue_number=${params.issue_number}`, {
+                method: 'PATCH',
                 headers: {
-                    'X-GitHub-Api-Version': '2022-11-28'
-                }
-            })
-            console.log(result);
+                    'authorization': token
+                },
+                body: JSON.stringify({ title, body })
+            });
+            const number = await result.json();
+
+            // redirect to issue page
+            router.replace(`/${number}?owner=${owner}&repo=${repo}&title=${title}`);
         }
         else {
             window.alert("Title and Body are required");
         }
     }
 
-    const titleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        ;
-    }
 return(
     <div className="mx-12 my-7 w-full">
         <h1>Edit Issue</h1>
@@ -68,7 +61,7 @@ return(
                     placeholder="Body" value={issue.body}
                     onChange={(e) => setIssue({...issue, body: e.target.value})}/>
         </form>
-        <button className="rounded py-2 px-4 bg-slate-300" onClick={postIssue}>Create Issue</button>
+        <button className="rounded py-2 px-4 bg-slate-300" onClick={updateIssue}>Submit Edit</button>
     </div>
 )
 
