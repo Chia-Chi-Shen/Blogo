@@ -11,6 +11,7 @@ type TokenContextType = {
     setToken: (value: string) => void;
     authorizedOctokit: Octokit;
     user: string;
+    avatar: string;
 };
 
 const TokenContext = createContext<TokenContextType>(
@@ -20,7 +21,8 @@ const TokenContext = createContext<TokenContextType>(
         token: "",
         setToken: () => {},
         authorizedOctokit: new Octokit(),
-        user: ""
+        user: "",
+        avatar: ""
     }
 );
 
@@ -28,6 +30,7 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
     const [code, setCode] = useState("");
     const [token, setToken] = useState("");
     const [user, setUser] = useState("");
+    const [avatar, setAvatar] = useState("");
     var authorizedOctokit = new Octokit();
 
     // reset token if code changes, code expires after 10 minutes
@@ -40,10 +43,10 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
             if ( savedCode !== code) {
                 const login = async () => {
                     const res = await fetch("/api/login?code=" + code)
-                    const {token, user} = await res.json()
+                    const { token, user, avatar } = await res.json()
                     setToken(token);
-                    console.log("user: ", user);
                     setUser(user);
+                    setAvatar(avatar);
                 }
                 try {
                     login();
@@ -72,6 +75,10 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
         if (savedUser) {
             setUser(savedUser);
         }
+        const savedAvatar = localStorage.getItem('avatar');
+        if (savedAvatar) {
+            setAvatar(savedAvatar);
+        }
     }, []);
 
     // set token in local storage, and create authorized Octokit
@@ -82,10 +89,18 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
                 auth: token,
             });
             
-        } else {
-            localStorage.removeItem('token');
-        }
+        } 
+        // else {
+        //     localStorage.removeItem('token');
+        // }
     }, [token]);
+
+    // save avatar
+    useEffect(() => {
+        if (avatar) {
+            localStorage.setItem('avatar', avatar);
+        }
+    }, [avatar]);
 
     // save user name 
     useEffect(() => {
@@ -97,7 +112,8 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
 
 
     return (
-        <TokenContext.Provider value={{ code, setCode, token, setToken, authorizedOctokit, user}}>
+        <TokenContext.Provider value={{ code, setCode, token, setToken, 
+                                        authorizedOctokit, user, avatar}}>
             {children}
         </TokenContext.Provider>
     );

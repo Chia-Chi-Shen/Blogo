@@ -2,6 +2,7 @@
 import { Octokit } from "octokit";
 import { useToken } from "@/containers/hook/useToken";
 import { useRouter, useSearchParams } from "next/navigation";
+import IssueForm from "@/components/issueForm";
 
 export default function CreateIssue() {
     const { token, user } = useToken();
@@ -16,7 +17,7 @@ export default function CreateIssue() {
         const title = (document.getElementById('title') as HTMLInputElement).value;
         const body = (document.getElementById('body') as HTMLTextAreaElement).value;
 
-        if (title && body) {
+        if (title && body.length >= 30) {
             const result = await fetch(`/api/issue?owner=${owner}&repo=${repo}`, {
                 method: 'POST',
                 headers: {
@@ -33,19 +34,6 @@ export default function CreateIssue() {
             window.alert("Title and Body are required");
         }
     }
-return(
-    <div className="mx-12 my-7 w-full">
-        <h1>Create Issue</h1>
-        <form>
-            <label htmlFor="title">Title</label>
-            <input id="title" className="rounded outline-0 border border-slate-200 w-[70%] block" 
-                    type="text" placeholder="Title"/>
-            <label htmlFor="body">Body</label>
-            <textarea id="body" className="rounded outline-0 border border-slate-200 w-[70%] h-[200px] block" 
-                        placeholder="Body"/>
-        </form>
-        <button className="rounded py-2 px-4 bg-slate-300" onClick={postIssue}>Create Issue</button>
-    </div>
-)
+return <IssueForm submit={postIssue} issue={null} setIssue={null}/>
 
 }

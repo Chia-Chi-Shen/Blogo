@@ -1,10 +1,10 @@
 //[issue_number]/updateIssue/page.tsx
 
 'use client'
-import { Octokit } from "octokit";
 import { useToken } from "@/containers/hook/useToken";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import IssueForm from "@/components/issueForm";
 
 export default function UpdateIssue( { params }: { params: { issue_number: string } }) {
     const [issue, setIssue] = useState({title: "", body: ""});
@@ -30,7 +30,7 @@ export default function UpdateIssue( { params }: { params: { issue_number: strin
         const title = (document.getElementById('title') as HTMLInputElement).value;
         const body = (document.getElementById('body') as HTMLTextAreaElement).value;
 
-        if (title && body) {
+        if (title && body.length >= 30) {
             const result = await fetch(`/api/issue?owner=${owner}&repo=${repo}&issue_number=${params.issue_number}`, {
                 method: 'PATCH',
                 headers: {
@@ -48,21 +48,6 @@ export default function UpdateIssue( { params }: { params: { issue_number: strin
         }
     }
 
-return(
-    <div className="mx-12 my-7 w-full">
-        <h1>Edit Issue</h1>
-        <form>
-            <label htmlFor="title">Title</label>
-            <input id="title" className="rounded outline-0 border border-slate-200 w-[70%] block" 
-                    type="text" placeholder="Title" value={issue.title}
-                    onChange={(e) => setIssue({...issue, title: e.target.value})}/>
-            <label htmlFor="body">Body</label>
-            <textarea id="body" className="rounded outline-0 border border-slate-200 w-[70%] h-[200px] block" 
-                    placeholder="Body" value={issue.body}
-                    onChange={(e) => setIssue({...issue, body: e.target.value})}/>
-        </form>
-        <button className="rounded py-2 px-4 bg-slate-300" onClick={updateIssue}>Submit Edit</button>
-    </div>
-)
+return <IssueForm submit={updateIssue} issue={issue} setIssue={setIssue}/>;
 
 }

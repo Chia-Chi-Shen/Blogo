@@ -1,4 +1,5 @@
-import { Octokit } from "octokit";
+import { Octokit } from "@octokit/core";
+import { createAppAuth } from "@octokit/auth-app";
 
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
@@ -30,5 +31,8 @@ export const GET = async (request: Request) => {
         }
     })
 
-    return Response.json({ token: data.access_token, user: user.data.login })
+    return Response.json({ token: data.access_token, 
+                            user: user.data.login, 
+                            avatar: user.data.avatar_url})
 }; 
+
