@@ -1,7 +1,7 @@
 // containers/useToken.js
 'use client'
 import { useContext, createContext, useState, useEffect } from "react";
-import { Octokit } from "octokit";
+import { Octokit } from "@octokit/core";
 
 
 type TokenContextType = {
@@ -9,7 +9,7 @@ type TokenContextType = {
     setCode: (value: string) => void;
     token: string;
     setToken: (value: string) => void;
-    authorizedOctokit: Octokit;
+    // authorizedOctokit: Octokit;
     user: string;
     avatar: string;
 };
@@ -20,7 +20,7 @@ const TokenContext = createContext<TokenContextType>(
         setCode: () => {},
         token: "",
         setToken: () => {},
-        authorizedOctokit: new Octokit(),
+        // authorizedOctokit: new Octokit(),
         user: "",
         avatar: ""
     }
@@ -31,7 +31,7 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
     const [token, setToken] = useState("");
     const [user, setUser] = useState("");
     const [avatar, setAvatar] = useState("");
-    var authorizedOctokit = new Octokit();
+    // var authorizedOctokit = new Octokit();
 
     // reset token if code changes, code expires after 10 minutes
     useEffect(() => {
@@ -85,9 +85,9 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token);
-            authorizedOctokit = new Octokit({
-                auth: token,
-            });
+            // authorizedOctokit = new Octokit({
+            //     auth: token,
+            // });
             
         } 
         // else {
@@ -113,7 +113,7 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
 
     return (
         <TokenContext.Provider value={{ code, setCode, token, setToken, 
-                                        authorizedOctokit, user, avatar}}>
+                                     user, avatar}}>
             {children}
         </TokenContext.Provider>
     );

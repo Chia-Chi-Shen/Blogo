@@ -1,20 +1,37 @@
 'use client'
 import { Octokit } from "octokit";
+import { useState, useEffect } from "react";
 import { useToken } from "@/containers/hook/useToken";
 import { useRouter, useSearchParams } from "next/navigation";
-import IssueForm from "@/components/issueForm";
+import IssueForm from "@/components/issueForm/issueForm";
 
 export default function CreateIssue() {
     const { token, user } = useToken();
+    const [options, setOptions] = useState([] as string[]);
     const router = useRouter();
     const searchParams = useSearchParams();
     const owner = searchParams.get('owner')?? "chia-chi-shen";
     const repo = searchParams.get('repo')?? "test";
 
+    const getRepos = async () => {
+        const res = await fetch(`/api/repo?user=${owner}`,{
+            method: 'GET',
+            headers: {
+                'authorization': token
+            }
+        });
+        const {user: {repositories}} = await res.json();
+        setOptions(repositories.nodes
+                                .map((repo: {name: string}) => repo.name));
+    }
+    useEffect(() => {
+        getRepos();
+    }, [])
 
     const postIssue = async() => {
 
         const title = (document.getElementById('title') as HTMLInputElement).value;
+        const repository = (document.getElementById('repo') as HTMLSelectElement).value;
         const body = (document.getElementById('body') as HTMLTextAreaElement).value;
 
         if (title && body.length >= 30) {
@@ -28,12 +45,12 @@ export default function CreateIssue() {
             const number = await result.json();
 
             // redirect to issue page
-            router.replace(`/${number}?owner=${owner}&repo=${repo}&title=${title}`);
+            router.replace(`repos/${repo}/${number}?owner=${owner}`);
         }
         else {
             window.alert("Title and Body are required");
         }
     }
-return <IssueForm submit={postIssue} issue={null} setIssue={null}/>
+return <IssueForm submit={postIssue} issue={null} setIssue={null} options={options}/>
 
 }

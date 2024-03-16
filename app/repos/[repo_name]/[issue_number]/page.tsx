@@ -16,7 +16,7 @@ type Comment = {
     updated_at: string
 };
 
-export default function Page({ params }: { params: { issue_number: string } }) {
+export default function Page({ params }: { params: { repo_name: string, issue_number: string } }) {
     
     const [issue, setIssue] = useState({title: "", body: "", updated_at: ""} as Issue);
     const [comments, setComments] = useState([] as Comment[]);
@@ -24,14 +24,14 @@ export default function Page({ params }: { params: { issue_number: string } }) {
     const pathName = usePathname();
     const searchParams = useSearchParams();
     const owner = searchParams.get('owner')?? "chia-chi-shen";
-    const repo = searchParams.get('repo')?? "test";
+    const repo = params.repo_name;
     const { token, user, avatar } = useToken();
     
     useEffect(() => {
         // if navigate to /createIssue, redirect to home page
         console.log("pathName: ", pathName);
         if (pathName === "/createIssue") {
-            router.push("/");
+            router.push(`{/repos/${repo}}`);
         }
         
       }, [pathName])
@@ -96,12 +96,12 @@ export default function Page({ params }: { params: { issue_number: string } }) {
                 close this issue
             </div>
             <div className="issue-header flex gap-3 justify-between items-end my-5 w-full">
-            <div className="m-0 text-3xl font-bold leading-[0.8] ">{searchParams.get("title")}</div>
+            <div className="m-0 text-3xl font-bold leading-[0.8] ">{issue.title}</div>
             {
                 token?
                 <div className="flex gap-2 opacity-70 items-end ">
                     <a 
-                        href={`${params.issue_number}/updateIssue?owner=${owner}&repo=${repo}`} 
+                        href={`${params.issue_number}/updateIssue?owner=${owner}`} 
                         className="px-2 text-[--primary]"
                         >{editIcon}</a>
                     

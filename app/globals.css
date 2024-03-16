@@ -3,9 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  /* --bg-color: #f9f9f1;
+  --primary: #ca3b17;
+  --primary-light: #dd9a8e;
+  --text-color: #692210; */
+  --bg-color:#f1f1f9;
+  --primary: #1759ca; 
+  --primary-semilight: #94a5be;
+  --primary-light: #c8d5f3;
+  --text-color: #102169;
 }
 *,
 *::before,
@@ -15,17 +21,22 @@
   padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer components {
+  .container {
+    @apply 
+    w-full px-4 
+    md:px-24 md:max-w-[1200px] 
+    flex flex-col items-center justify-start;  
   }
+
 }
 
 body {
-  color: #334155;
-  background-color: #f1f5f9;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @layer utilities {

@@ -2,12 +2,15 @@ import { Octokit } from "octokit";
 import { cookies } from 'next/headers'
 
 
-const octokit = new Octokit();
+
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const repo = searchParams.get("repo")?? "chia-chi-shen/test";
   const page = searchParams.get("page");
 
+  const token = request.headers.get('authorization');
+  const octokit = new Octokit({ auth: token });
+  
   if (!repo) 
       return Response.json({ error: "repo is required" });
   const q = encodeURIComponent(`repo:${repo} is:open is:issue`);

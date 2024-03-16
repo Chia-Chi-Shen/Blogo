@@ -1,5 +1,4 @@
-import { Octokit } from "@octokit/core";
-import { createAppAuth } from "@octokit/auth-app";
+import { Octokit } from "octokit";
 
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;

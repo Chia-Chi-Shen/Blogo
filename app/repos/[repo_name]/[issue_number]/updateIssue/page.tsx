@@ -6,13 +6,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import IssueForm from "@/components/issueForm/issueForm";
 
-export default function UpdateIssue( { params }: { params: { issue_number: string } }) {
+export default function UpdateIssue({ params }: { params: { repo_name: string, issue_number: string } }) {
     const [issue, setIssue] = useState({title: "", body: ""});
-    const { token, user, authorizedOctokit } = useToken();
+    const { token, user } = useToken();
     const router = useRouter();
     const searchParams = useSearchParams();
     const owner = searchParams.get('owner')?? "chia-chi-shen";
-    const repo = searchParams.get('repo')?? "test";
+    const repo = params.repo_name;
 
     useEffect(() => {
         const getIssue = async () => {
@@ -48,6 +48,6 @@ export default function UpdateIssue( { params }: { params: { issue_number: strin
         }
     }
 
-return <IssueForm submit={updateIssue} issue={issue} setIssue={setIssue}/>;
+return <IssueForm submit={updateIssue} issue={issue} setIssue={setIssue} options={null}/>;
 
 }
