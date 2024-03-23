@@ -7,7 +7,7 @@
   --primary: #ca3b17;
   --primary-light: #dd9a8e;
   --text-color: #692210; */
-  --bg-color:#f1f1f9;
+  --bg-color:#f3f3fd;
   --primary: #1759ca; 
   --primary-semilight: #94a5be;
   --primary-light: #c8d5f3;
@@ -39,8 +39,14 @@ body {
   align-items: center;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+@keyframes gradientAnimation {
+  0% { background-position: 200% 0; }
+  100% { background-position: 0 0; }
 }
+
+.gradient-bg {
+  background: linear-gradient(to right, #f5f5f5, #ececec, #ececec, #f5f5f5, #ececec, #ececec, #f5f5f5);
+  background-size: 200% auto;
+  animation: gradientAnimation 1s infinite linear;
+}
+

@@ -1,6 +1,6 @@
 // containers/useToken.js
 'use client'
-import { useContext, createContext, useState, useEffect } from "react";
+import { useContext, createContext, useState, useEffect, useMemo } from "react";
 import { Octokit } from "@octokit/core";
 
 
@@ -12,6 +12,7 @@ type TokenContextType = {
     // authorizedOctokit: Octokit;
     user: string;
     avatar: string;
+    tokenScope: string;
 };
 
 const TokenContext = createContext<TokenContextType>(
@@ -22,13 +23,15 @@ const TokenContext = createContext<TokenContextType>(
         setToken: () => {},
         // authorizedOctokit: new Octokit(),
         user: "",
-        avatar: ""
+        avatar: "",
+        tokenScope: ""
     }
 );
 
 export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}>) => {
     const [code, setCode] = useState("");
     const [token, setToken] = useState("");
+    const [tokenScope, setTokenScope] = useState("")
     const [user, setUser] = useState("");
     const [avatar, setAvatar] = useState("");
     // var authorizedOctokit = new Octokit();
@@ -79,20 +82,23 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
         if (savedAvatar) {
             setAvatar(savedAvatar);
         }
+        console.log("render useToken");
     }, []);
 
     // set token in local storage, and create authorized Octokit
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token);
-            // authorizedOctokit = new Octokit({
-            //     auth: token,
-            // });
-            
+            const checkToken = async () => {
+                const res = await fetch(`/api/token`, {
+                    method: 'POST',
+                    headers: {'authorization': token} 
+                })
+                const scope = await res.json();
+                setTokenScope(scope);
+            } 
+            checkToken();
         } 
-        // else {
-        //     localStorage.removeItem('token');
-        // }
     }, [token]);
 
     // save avatar
@@ -109,11 +115,18 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
         }
     }, [user]);
 
+    // save token scope
+    useEffect(() => {
+        if (tokenScope) {
+            localStorage.setItem('tokenScope', tokenScope);
+        }
+    }, [tokenScope])
+
 
 
     return (
         <TokenContext.Provider value={{ code, setCode, token, setToken, 
-                                     user, avatar}}>
+                                     user, avatar, tokenScope}}>
             {children}
         </TokenContext.Provider>
     );

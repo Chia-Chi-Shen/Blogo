@@ -2,18 +2,25 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToken } from "@/containers/hook/useToken";
+import Link from "next/link";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
 const Navbar = () => {
     const router = useRouter();
-    const { token, user, avatar } = useToken();
+    const { token, user, avatar, setToken } = useToken();
     const [isFuncOpen, setIsFuncOpen] = useState(false);
     const loginWithGithub = () => {
         router.push("https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID + "&scope=repo");
       }
+    const logout = () => {
+        setToken("");
+        localStorage.removeItem("token");
+    }
+
     useEffect(() => {
         const userFunc = document.querySelector<HTMLElement>(".user-func");
+        console.log(isFuncOpen)
         if (userFunc)
             userFunc.style.display = isFuncOpen? "": "none";
             
@@ -60,7 +67,7 @@ const Navbar = () => {
                          justify-center z-[3] transition-[top]`}>
             <div className="w-full flex justify-end items-center gap-2">
             <div className="logo w-9 h-9 bg-contain bg-no-repeat my-3 bg-center bg-white">
-                <a href="/" className="inline-block w-full h-full"/>
+                <Link href="/" className="inline-block w-full h-full"/>
             </div>
             <div className="flex justify-end gap-x-9 items-center user-bar rounded-full px-3 \
                              py-2 transition duration-300">
@@ -89,11 +96,14 @@ const Navbar = () => {
             </div></div>
         </nav>
         <div className="user-func fixed right-4 md:right-24 top-16 flex flex-col gap-3 \
-                         items-center rounded bg-white shadow p-1">
-                <a href={`/repos?user=${user}`} 
-                    className="p-2 text-[--primary] hover:bg-[--primary-light]">My Repo</a>
-                <a href="/createIssue" 
-                    className="p-2 text-[--primary] hover:bg-[--primary-light]">New Post</a>
+                         items-center rounded bg-white shadow p-1 z-[10]">
+                <Link href={`/repos?user=${user}`} 
+                    className="p-2 text-[--primary] hover:bg-[--primary-light]">My Repo</Link>
+                <Link href="/createIssue" 
+                    className="p-2 text-[--primary] hover:bg-[--primary-light]">New Post</Link>
+                <Link href="/" 
+                    className="p-2 text-[--primary] hover:bg-[--primary-light]"
+                    onClick={logout}>Logout</Link>
         </div>
         </>
     )

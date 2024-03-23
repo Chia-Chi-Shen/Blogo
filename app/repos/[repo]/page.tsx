@@ -10,7 +10,7 @@ type issueElement = {
   number: number;
 }
 
-export default function Repo({ params }: { params: { repo_name: string }}) {
+export default function Repo({ params }: { params: { repo: string }}) {
   
   const [titleAndNumber, setTitleAndNumber] = useState([] as issueElement[]);
   const [isEnd, setIsEnd] = useState(false);
@@ -19,16 +19,12 @@ export default function Repo({ params }: { params: { repo_name: string }}) {
 
 
   const getInitIssues = async (titleAndNumber: issueElement[], isFirst: boolean) => {
-    const res = await fetch(`/api/issueList?page=${page}&repo=${user.toLowerCase()}/${params.repo_name}`,{
+    const res = await fetch(`/api/issueList?page=${page}&repo=${user.toLowerCase()}/${params.repo}`,{
       method: 'GET',
-      headers: {
-        'authorization': token
-      }
+      headers: { 'authorization': token}
     });
     const { newTitleAndNumber, isEnd } = await res.json();
 
-    console.log(`repo: repo=${user.toLowerCase()}/${params.repo_name}`)
-    console.log("newTitleAndNumber: ", newTitleAndNumber);
     setIsEnd(isEnd);
     setTitleAndNumber([...titleAndNumber, ...newTitleAndNumber])
     setPage(page+1);
@@ -60,25 +56,22 @@ export default function Repo({ params }: { params: { repo_name: string }}) {
     <>
     <header className="absolute top-0 flex flex-col items-start justify-center w-full h-52 z-[-1] gap-2 \
                       md:h-80">
+      <div className="header-title container z-[2] self-center gap-2 mt-16">
+        <h1 className="text-5xl text-[--primary] font-bold md:text-7xl self-start">{params.repo}</h1>
+      </div>      
       <div className="absolute w-full h-full bg-[url('/images/home-header.jpg')] bg-cover bg-center opacity-60">
       </div>
     </header>
-    <main className="w-full flex min-h-screen flex-col items-center justify-start gap-3 p-4 pt-32 \
-                     md:p-24 md:gap-3 md:pt-52 ">
+    <main className="container gap-3 md:gap-4 md:pt-52 ">
         {
         (titleAndNumber.length === 0) ?
         <div className="text-2xl font-bold">No issue yet</div>:
         titleAndNumber.map((issue, index) => (
           <ListElement key={index} title={issue.title} 
-                      link={`/repos/${params.repo_name}/${issue.number}?owner=${user.toLowerCase()}`}
+                      link={`/repos/${params.repo}/${issue.number}?owner=${user.toLowerCase()}`}
                       number={null}/>
         ))}
     </main>
-    <a className="fixed w-[60px] h-[60px] bottom-[50px] right-[50px] rounded-full \
-                  z-[2] bg-slate-200 flex items-center justify-center" 
-            href="/createIssue">
-      {editIcon}
-    </a>
     </>
   );
 }

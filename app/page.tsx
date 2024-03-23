@@ -11,6 +11,7 @@ type issueElement = {
   title: string;
   number: number;
 }
+const repo = "react", owner = "facebook";
 
 export default function Home() {
   
@@ -22,12 +23,11 @@ export default function Home() {
 
 
   const getInitIssues = async (titleAndNumber: issueElement[], isFirst: boolean) => {
-    const res = await fetch(`/api/issueList?page=${page}`);
+    const res = await fetch(`/api/issueList?page=${page}&repo=${owner.toLowerCase()}/${repo}`);
     const { newTitleAndNumber, isEnd } = await res.json();
     setIsEnd(isEnd);
     setTitleAndNumber([...titleAndNumber, ...newTitleAndNumber])
     setPage(page+1);
-    console.log("issues: ", newTitleAndNumber);
   }
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function Home() {
     if (code) 
       setCode(code);
     
-    // getInitIssues(titleAndNumber, true);
+    getInitIssues(titleAndNumber, true);
   },[]);
 
   useEffect(() => {
@@ -66,10 +66,10 @@ export default function Home() {
       <div className="absolute w-full h-full bg-[url('/images/home-header.jpg')] bg-cover bg-center opacity-60">
       </div>
     </header>
-    <main className="container gap-3 md:gap-3 md:pt-52 ">
+    <main className="container gap-3 md:gap-4 md:pt-52 ">
         {titleAndNumber.map((issue, index) => (
           <ListElement key={index} title={issue.title} number={index+1}
-                      link={`/repos/test/${issue.number}?`}/>
+                      link={`/repos/${repo}/${issue.number}?owner=${owner}`}/>
         ))}
     </main>
     {/* <a className="fixed w-[60px] h-[60px] bottom-[50px] right-[50px] rounded-full \
