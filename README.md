@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Blogo
+A blog website used for editing and sharing GitHub issue articles.
 
-## Getting Started
+- Framework - [Next.js 14](https://nextjs.org/) with [App Router](https://nextjs.org/docs#app-router-vs-pages-router)
+- Language - [TypeScript](https://www.typescriptlang.org/)
+- Styling - [Tailwind CSS](https://tailwindcss.com/)
 
-First, run the development server:
+## Overview
+1. [Features](#features)
+- [Github Login](#github-login)
+- [Post Management](#post-management)
+- [User Interface](#user-interface)
+  - [文章列表頁](#文章列表頁)
+  - [文章內頁](#文章內頁)
+  - [新增及編輯文章](#新增/編輯文章)
+  - [Navbar](#navbar)
+2. [How to use](#how-to-use)
+3. [Architecture Design](#architecture-design)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
+### GitHub Login
+- 使用者以 GitHub 帳號登入，採用 [GitHub Oauth](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps) 驗證，以便使用 [GitHub REST API](https://docs.github.com/en/rest?apiVersion=2022-11-28)
+- 使用者登入時若無開放權限，將無法使用完整功能
+- 成功登入後使用者資訊記錄於```local storage```，毋須重複登入
+- 登出即可將資訊清除
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Post Management
+- GitHub Issue 作為部落格貼文
+- 使用者無須登入即可查看作者所有的文章內容及留言，但無編輯權限
+- 使用者登入後:
+  - 可以瀏覽自己的所有repositories，及其中的所有issues和留言
+  - 可以編輯自己的貼文以及刪除貼文（即關閉該 issue）
+  - 可以在自己的任意repository新增貼文
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### User Interface
+#### 文章列表頁
+- ```infinite scrolling```:  每次載入 10 筆，滾到底部時才會載入額外 10 筆,直到沒有更多文章
+#### 文章內頁
+- 顯示轉譯過的 markdown 內容、作者、上次更新時間及留言
+- 使用[Post Management](#post-management)的功能
+#### 新增及編輯文章
+- ```form validation```:  標題為必填，內文至少需要 30 字，新增文章需選擇目標repository
+- ```avoiding resubmission```:  送出後自動跳轉至該文章內頁，再按上一頁即返回文章列表，避免重複送出表單
+#### Navbar
+- 頁面下滑自動縮小，擴增視野
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## How to Use
 
-## Learn More
+## Architecture Design
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
