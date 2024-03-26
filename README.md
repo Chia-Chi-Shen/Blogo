@@ -7,13 +7,9 @@ A blog website used for editing and sharing GitHub issue articles.
 
 ## Overview
 1. [Features](#features)
-- [Github Login](#github-login)
-- [Post Management](#post-management)
-- [User Interface](#user-interface)
-  - [文章列表頁](#文章列表頁)
-  - [文章內頁](#文章內頁)
-  - [新增及編輯文章](#新增/編輯文章)
-  - [Navbar](#navbar)
+    - [Github Login](#github-login)
+    - [Post Management](#post-management)
+    - [User Interface](#user-interface)
 2. [How to use](#how-to-use)
 3. [Architecture Design](#architecture-design)
 
@@ -45,6 +41,38 @@ A blog website used for editing and sharing GitHub issue articles.
 - 頁面下滑自動縮小，擴增視野
 
 ## How to Use
-
+### Vercel
+### On your computer
+0. Your computer should have downloaded Node.js before（Node >= 14.0.0 and npm >= 5.6）
+1. Download this repository via ```git clone```
+2. Register a new OAuth application to get your own client id and secret [here](https://github.com/settings/applications/new)
+    - Please set **Homepage URL** and **Authorization callback URL** to ```https://127.0.0.1:3000/```
+3. Set necessary enviroment variables:
+    - add a new ```.env.local``` file under root directory
+    - add enviroment variables:
+   ```
+   NEXT_PUBLIC_GITHUB_CLIENT_ID={your_client_id}
+   GITHUB_CLIENT_ID={your_client_id}
+   GITHUB_CLIENT_SECRET={your_client_secret}
+   ```
+4. run following commands under this repository 
+    ```
+    npm install
+    npm run build
+    ```
 ## Architecture Design
+### app/
+#### app/api/
+#### app/page.js
+#### app/repos/
+#### app/createIssue/
+
+### components/
+#### issueForm
+#### listElement
+#### navbar
+#### noPermission
+
+### containers/hook/
+
 
