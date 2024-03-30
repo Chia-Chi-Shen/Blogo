@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
     <ParallaxProvider>
     <TokenProvider>
-      <body className={`${oxygen.className}`}>
+      <body className={`${oxygen.className} flex flex-col`}>
         <Navbar />
         {children}
         <Footer />

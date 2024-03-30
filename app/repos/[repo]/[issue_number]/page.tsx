@@ -46,7 +46,8 @@ export default function Page({ params }: { params: { repo: string, issue_number:
 
         const getIssue = async () => {
             // if no owner and repo specified, use default
-            const res = await fetch(`/api/issue?issue_number=${params.issue_number}&owner=${owner}&repo=${repo}&parse=true`);
+            const res = await fetch(`/api/issue?issue_number=${params.issue_number}&owner=${owner}&repo=${repo}&parse=true`,
+                                    { headers: {"authorization": token } });
             const { issue, comments } = await res.json();
             setIssue(issue);
             setComments(comments);

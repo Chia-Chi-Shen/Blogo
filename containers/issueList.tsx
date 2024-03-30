@@ -2,6 +2,7 @@
 // handle requirements for different repo
 import { useState, useEffect } from "react";
 import ListElement from "@/components/listElement";
+import { useToken } from "./hook/useToken";
 
 interface IssueListProps {
     owner: string;
@@ -19,9 +20,11 @@ export default function IssueList({ owner, repo }: IssueListProps) {
     const [issues, setIssues] = useState([] as issueElement[]);
     const [isEnd, setIsEnd] = useState(false);
     const [page, setPage] = useState(1);
+    const { token } = useToken();
 
     const getIssues = async (page:number) => {
-        const res = await fetch(`/api/issueList?page=${page}&repo=${owner.toLowerCase()}/${repo}`);
+        const res = await fetch(`/api/issueList?page=${page}&repo=${owner.toLowerCase()}/${repo}`,
+                                { headers: {"authorization": token } }   );
         const { issues, isEnd } = await res.json();
 
         setIsEnd(isEnd);
