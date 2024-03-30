@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { TokenProvider } from "@/containers/hook/useToken";
 import ParallaxProvider from "@/containers/hook/useParallax";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const oxygen = Oxygen({weight: ["300","400", "700"], subsets: ["latin"]});
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <SpeedInsights />
       </body>
     </TokenProvider>
     </ParallaxProvider>
