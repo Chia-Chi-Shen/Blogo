@@ -3,13 +3,15 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import parse from "html-react-parser";
 import { useToken } from "@/containers/hook/useToken";
-import { editIcon, deleteIcon } from "@/components/icon";
+import { editIcon, deleteIcon, commentIcon } from "@/components/icon";
 import Link from "next/link";
 
 type Issue = {
     title: string, 
     body: string, 
-    updated_at: string
+    updated_at: string,
+    author?: string,
+    avatar?: string
 };
 type Comment = {
     user: string, 
@@ -83,16 +85,13 @@ export default function Page({ params }: { params: { repo: string, issue_number:
         <div className="w-[100vw] flex md:justify-center">
         <div className="prose max-w-none px-8 pt-4 w-full md:w-[70vw] flex flex-col items-center">
             {/* author */}
-            {
-            user.toLowerCase() === owner? 
             <div className="flex gap-3 items-center self-start">
-                {avatar?
-                <img src={avatar} className="profile w-6 h-6 rounded-full m-0"/> : 
+                {issue.avatar?
+                <img src={issue.avatar} className="profile w-6 h-6 rounded-full m-0"/> : 
                 <button className="profile rounded-full bg-slate-300 w-6 h-6"></button>
                 }
-                <div>{owner}</div>
-            </div>: <></>
-            }
+                <div>{issue.author || "unknown"}</div>
+            </div>
             <div className="tooltip relative top-12 text-sm text-white \
                             bg-[--primary] rounded p-1 self-end opacity-30" >
                 close this issue
@@ -104,7 +103,7 @@ export default function Page({ params }: { params: { repo: string, issue_number:
             <div className="m-0 text-3xl font-bold ">{issue.title}</div>
 
             <div className="flex gap-3 justify-end items-end">
-                <div className="text-slate-400 text-sm">
+                <div className="text-slate-400 text-sm tracking-wide font-light">
                     {new Date(issue.updated_at).toLocaleString().toLowerCase()}</div>
                 {
                 user.toLowerCase()===owner && tokenScope === 'repo'?
@@ -141,12 +140,15 @@ export default function Page({ params }: { params: { repo: string, issue_number:
             }
             
             {/* issue comments */}
-            <h2 className="text-[--primary] self-start "
+            <div className="flex gap-4 text-[--primary] self-start items-center mb-3 mt-5">
+            <h2 className="text-[--primary] m-0"
                 >Comments</h2>
+            {commentIcon}
+            </div>
             {
             comments.length === 0?
-            <div className="bg-gray-200 rounded h-[10vh] w-full p-5">
-                <p className="text-slate-400">No comments yet</p>
+            <div className="bg-gray-200 rounded h-[10vh] w-full p-5 text-slate-400">
+                No comments yet
             </div>
             :
             <div className="bg-white/90 rounded">

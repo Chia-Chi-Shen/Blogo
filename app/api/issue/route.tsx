@@ -47,7 +47,9 @@ export const GET =  async (request: Request) => {
     const issue = {
             title: issueResult.title, 
             body: issueBody, 
-            updated_at: issueResult.updated_at
+            updated_at: issueResult.updated_at,
+            author: issueResult.user?.login,
+            avatar: issueResult.user?.avatar_url
         };
     const { data: commentsResult } = await octokit.request(`GET ${issueResult.comments_url}`);
     const comments:Comment[] = commentsResult.map(

@@ -21,9 +21,12 @@ export const GET = async (request: Request) => {
         // per_page: 10,
     });
     // console.log(result.data.items[0]);
-    const newTitleAndNumber = result.data.items.map((issue:any) => ({
+    const issues = result.data.items.map((issue:any) => ({
       title: issue.title, 
-      number: issue.number ? issue.number : null
+      body: issue.body,
+      number: issue.number ? issue.number : null,
+      comments: issue.comments,
+      updated_at: issue.updated_at,
     }))
 
   //   console.log("newTitleAndNumber: ",newTitleAndNumber)
@@ -34,7 +37,7 @@ export const GET = async (request: Request) => {
     const nextUrl = linkHeader?.match(nextPattern)?.[0] ?? "";
     const isEnd = nextUrl==="";
 
-    return Response.json({ newTitleAndNumber,  isEnd });
+    return Response.json({ issues,  isEnd });
   
   } catch (error: any) {
     console.log(`Error! Status: ${error.status}. Message: ${error.response.data.message}`)

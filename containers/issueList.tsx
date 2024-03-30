@@ -9,21 +9,23 @@ interface IssueListProps {
 }
 type issueElement = {
     title: string;
+    body: string;
     number: number;
+    comments: number;
+    updated_at: string;
   }
 
 export default function IssueList({ owner, repo }: IssueListProps) {
-    const [titleAndNumber, setTitleAndNumber] = useState([] as issueElement[]);
+    const [issues, setIssues] = useState([] as issueElement[]);
     const [isEnd, setIsEnd] = useState(false);
     const [page, setPage] = useState(1);
 
     const getIssues = async (page:number) => {
         const res = await fetch(`/api/issueList?page=${page}&repo=${owner.toLowerCase()}/${repo}`);
-        const { newTitleAndNumber, isEnd } = await res.json();
-        console.log("isEnd: ",isEnd)
-        console.log("page: ", page)
+        const { issues, isEnd } = await res.json();
+
         setIsEnd(isEnd);
-        setTitleAndNumber(prev => [...prev, ...newTitleAndNumber])
+        setIssues(prev => [...prev, ...issues])
         setPage(prev => prev + 1);
     }
 
@@ -47,12 +49,13 @@ export default function IssueList({ owner, repo }: IssueListProps) {
     return(
         <>
         {
-        titleAndNumber.map((issue, index) => (
-            (titleAndNumber.length === 0) ?
+        issues.map((issue, index) => (
+            (issues.length === 0) ?
             <div className="text-2xl font-bold">No issue yet</div>
             :    
-            <ListElement key={index} title={issue.title} number={index+1}
-                      link={`/repos/${repo}/${issue.number}?owner=${owner}`}/>
+            <ListElement key={index} title={issue.title} number={index+1} body={issue.body}
+                        comments={issue.comments} updated_at={issue.updated_at}
+                        link={`/repos/${repo}/${issue.number}?owner=${owner}`}/>
         ))}
         </>
     )
