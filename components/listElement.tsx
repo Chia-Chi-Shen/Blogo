@@ -14,7 +14,7 @@ const ListElement = ({ title, link, number } : ListElementProps) =>{
             <div className="w-full h-full flex justify-between">
                 <h1 className="truncate font-medium text-xl md:text-2xl text-[--text-color] ml-2 max-w-[70%]">{title}</h1>
                 {number &&
-                <div className="bg-[--primary-light] w-6 h-6 text-center text-white rounded text-sm relative bottom-4 left-4"
+                <div className="bg-[--primary-light] min-w-6 h-6 text-center text-white rounded text-sm relative bottom-4 left-4"
                     >{number}</div>}
             </div>
         </Link>

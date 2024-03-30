@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Oxygen } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 import { TokenProvider } from "@/containers/hook/useToken";
 import ParallaxProvider from "@/containers/hook/useParallax";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={`${oxygen.className}`}>
         <Navbar />
         {children}
+        <Footer />
       </body>
     </TokenProvider>
     </ParallaxProvider>

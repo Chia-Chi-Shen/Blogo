@@ -76,15 +76,15 @@ export default function Page({ params }: { params: { repo: string, issue_number:
             }
         });
         const number = await result.json();
-        router.push("/");
+        router.push("/repos/"+repo);
     }
 
     return (
         <div className="w-[100vw] flex md:justify-center">
-        <div className="prose px-8 pt-4 w-full md:w-[70vw] flex flex-col items-center">
+        <div className="prose max-w-none px-8 pt-4 w-full md:w-[70vw] flex flex-col items-center">
             {/* author */}
             {
-            user === owner? 
+            user.toLowerCase() === owner? 
             <div className="flex gap-3 items-center self-start">
                 {avatar?
                 <img src={avatar} className="profile w-6 h-6 rounded-full m-0"/> : 
@@ -93,21 +93,21 @@ export default function Page({ params }: { params: { repo: string, issue_number:
                 <div>{owner}</div>
             </div>: <></>
             }
-            <div className="tooltip relative top-5 text-sm text-[--primary] \
-                            border border-[--primary] rounded p-1 self-end opacity-60" >
+            <div className="tooltip relative top-12 text-sm text-white \
+                            bg-[--primary] rounded p-1 self-end opacity-30" >
                 close this issue
             </div>
 
             {/* issue header */}
             {issue.title? 
-            <div className="issue-header flex flex-col my-5 w-full">
+            <div className="issue-header flex flex-col mt-5 w-full gap-4">
             <div className="m-0 text-3xl font-bold ">{issue.title}</div>
 
             <div className="flex gap-3 justify-end items-end">
                 <div className="text-slate-400 text-sm">
-                    {new Date(issue.updated_at).toLocaleString()}</div>
+                    {new Date(issue.updated_at).toLocaleString().toLowerCase()}</div>
                 {
-                user===owner && tokenScope === 'repo'?
+                user.toLowerCase()===owner && tokenScope === 'repo'?
                 <div className="flex gap-2 opacity-70 items-end ">
                     <Link 
                         href={`${params.issue_number}/updateIssue?owner=${owner}`} 
@@ -145,7 +145,9 @@ export default function Page({ params }: { params: { repo: string, issue_number:
                 >Comments</h2>
             {
             comments.length === 0?
-            <></>
+            <div className="bg-gray-200 rounded h-[10vh] w-full p-5">
+                <p className="text-slate-400">No comments yet</p>
+            </div>
             :
             <div className="bg-white/90 rounded">
             {comments.map((comment:Comment, index:number) => (

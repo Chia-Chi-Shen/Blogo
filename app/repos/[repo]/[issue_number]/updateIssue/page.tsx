@@ -4,7 +4,7 @@
 import { useToken } from "@/containers/hook/useToken";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import IssueForm from "@/components/issueForm/issueForm";
+import IssueForm from "@/components/issueForm";
 
 export default function UpdateIssue({ params }: { params: { repo_name: string, issue_number: string } }) {
     const [issue, setIssue] = useState({title: "", body: ""});

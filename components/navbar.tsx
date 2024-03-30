@@ -15,6 +15,7 @@ const Navbar = () => {
       }
     const logout = () => {
         setToken("");
+        setIsFuncOpen(false);
         localStorage.removeItem("token");
     }
 
@@ -66,7 +67,7 @@ const Navbar = () => {
         <nav className={`navbar m-0 px-4 md:px-20 bg-[transparent] w-full sticky top-0 flex \
                          justify-center z-[3] transition-[top]`}>
             <div className="w-full flex justify-end items-center gap-2">
-            <div className="logo w-9 h-9 bg-contain bg-no-repeat my-3 bg-center bg-white">
+            <div className="logo w-7 h-7 bg-contain bg-no-repeat my-3 bg-center bg-[url('/images/blogo.png')]">
                 <Link href="/" className="inline-block w-full h-full"/>
             </div>
             <div className="flex justify-end gap-x-9 items-center user-bar rounded-full px-3 \
@@ -104,6 +105,8 @@ const Navbar = () => {
                 <Link href="/" 
                     className="p-2 text-[--primary] hover:bg-[--primary-light]"
                     onClick={logout}>Logout</Link>
+                {/* <div className="absolute w-screen h-screen z-[2]"
+                     onClick={() =>setIsFuncOpen(false)}/> */}
         </div>
         </>
     )

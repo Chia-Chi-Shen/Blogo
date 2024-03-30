@@ -3,7 +3,7 @@ import { Octokit } from "octokit";
 import { useState, useEffect } from "react";
 import { useToken } from "@/containers/hook/useToken";
 import { useRouter, useSearchParams } from "next/navigation";
-import IssueForm from "@/components/issueForm/issueForm";
+import IssueForm from "@/components/issueForm";
 
 export default function CreateIssue() {
     const { token, user } = useToken();
