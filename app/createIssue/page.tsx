@@ -44,29 +44,6 @@ export default function CreateIssue() {
         router.replace(`repos/${repo}/${number}?owner=${owner}`);
     }
 
-    const postIssue = async() => {
-
-        const title = (document.getElementById('title') as HTMLInputElement).value;
-        const repo = (document.getElementById('repo') as HTMLSelectElement).value;
-        const body = (document.getElementById('body') as HTMLTextAreaElement).value;
-
-        if (title && body.length >= 30) {
-            const result = await fetch(`/api/issue?owner=${owner}&repo=${repo}`, {
-                method: 'POST',
-                headers: {
-                    'authorization': token
-                },
-                body: JSON.stringify({ title, body })
-            });
-            const number = await result.json();
-
-            // redirect to issue page
-            router.replace(`repos/${repo}/${number}?owner=${owner}`);
-        }
-        else {
-            window.alert("Title and Body are required");
-        }
-    }
 return <IssueForm submit={submit} issue={null} setIssue={null} options={options}/>
 
 }
