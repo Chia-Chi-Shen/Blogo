@@ -2,7 +2,7 @@ Cover photo by <a href="https://unsplash.com/@anikeevxo?utm_content=creditCopyTe
 
 Photo by <a href="https://unsplash.com/@henry_be?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Henry Be</a> on <a href="https://unsplash.com/photos/orange-flowers-IicyiaPYGGI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
   
-# Blogo
+# [Blogo](https://blogo.vercel.app/)
 A blog website used for editing and sharing GitHub issue articles.
 
 - Framework - [Next.js 14](https://nextjs.org/) with [App Router](https://nextjs.org/docs#app-router-vs-pages-router)
@@ -45,7 +45,8 @@ A blog website used for editing and sharing GitHub issue articles.
 - 頁面下滑自動縮小，擴增視野
 
 ## How to Use
-### Vercel
+### Vercel App
+Blogo has been deployed on [https://blogo.vercel.app/](https://blogo.vercel.app/)
 ### On your computer
 0. Your computer should have downloaded Node.js before（Node >= 14.0.0 and npm >= 5.6）
 1. Download this repository via ```git clone```
