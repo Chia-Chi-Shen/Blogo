@@ -37,7 +37,8 @@ export default function Repos() {
             {
             (repos.length !== 0) ?
             repos.map((repo, index) => 
-                <ListElement key={index} title={repo.name} link={`/repos/${repo.name}`} number={index+1}/>)
+                <ListElement key={index} title={repo.name} link={`/repos/${repo.name}`} number={index+1}
+                            body={null} comments={null} updated_at={null}/>)
                 : <></>
             }
             </div>
