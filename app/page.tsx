@@ -7,8 +7,8 @@ import IssueList from "@/containers/issueList";
 import { Parallax } from "react-scroll-parallax";
 import Image from "next/image";
 
-const repo = process.env.NEXT_PUBLIC_REPO?.toLowerCase() || "facebook"
-      , owner = process.env.NEXT_PUBLIC_USER?.toLowerCase() || "react";
+const repo = process.env.NEXT_PUBLIC_REPO?.toLowerCase() || "react"
+      , owner = process.env.NEXT_PUBLIC_USER?.toLowerCase() || "facebook";
 
 export default function Home() {
   
