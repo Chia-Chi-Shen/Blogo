@@ -1,12 +1,12 @@
 # [Blogo](https://blogo.vercel.app/)
-A blog website used for editing and sharing GitHub issue articles.
-( using [facebook/react repository](https://github.com/facebook/react/issues) as an example )
+A blog website used for editing and sharing GitHub issue articles.<br/>
+( using [facebook/react](https://github.com/facebook/react/issues) repository as an example )
 <img width="644" alt="image" src="https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/0114abde-0c87-408a-bb20-4a9ca9ce9c08">
 
 - Framework - [Next.js 14](https://nextjs.org/) with [App Router](https://nextjs.org/docs#app-router-vs-pages-router)
 - Language - [TypeScript](https://www.typescriptlang.org/)
 - Styling - [Tailwind CSS](https://tailwindcss.com/)
-Cover photo by <a href="https://unsplash.com/@anikeevxo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Vladimir Anikeev</a> on <a href="https://unsplash.com/photos/white-sky-photography-IM8ZyYaSW6g?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+<br/>Cover photo by <a href="https://unsplash.com/@anikeevxo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Vladimir Anikeev</a> on <a href="https://unsplash.com/photos/white-sky-photography-IM8ZyYaSW6g?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
 
 ## Overview
 1. [Features](#features-) 🔧
@@ -45,14 +45,14 @@ Cover photo by <a href="https://unsplash.com/@anikeevxo?utm_content=creditCopyTe
 
 ## How to Use 💡
 ### Vercel App
-Blogo has been deployed on [https://blogo.vercel.app/](https://blogo.vercel.app/)
-( using [facebook/react repository](https://github.com/facebook/react/issues) as an example )
+Blogo has been deployed on [https://blogo.vercel.app/](https://blogo.vercel.app/) <br/>
+( using [facebook/react](https://github.com/facebook/react/issues) repository as an example )
 ### On your computer
 0. Please install [Node.js](https://nodejs.org/en/) before launching the project
 1. ```git clone``` to download this repository
 2. Register a new OAuth application to get your own client id and secret [here](https://github.com/settings/applications/new)
     - please set **Homepage URL** and **Authorization callback URL** to ```https://127.0.0.1:3000/```
-      ( GitHub official documentation recommends using '127.0.0.1' over 'localhost'. )
+      <br/>( GitHub official documentation recommends using '127.0.0.1' over 'localhost'. )
 3. Set necessary environment variables:
     - add a new ```.env.local``` file under root directory
     - add following environment variables:
@@ -69,7 +69,7 @@ Blogo has been deployed on [https://blogo.vercel.app/](https://blogo.vercel.app/
     npm run build
     ```
 5. Open "https://127.0.0.1:3000/" on browser
-   (please remind that ```localhost``` is different from ```127.0.0.1```)
+   <br/>(please remind that ```localhost``` is different from ```127.0.0.1```)
 ## Architecture Design
 Grouping by file type
 - [components/](#components)
