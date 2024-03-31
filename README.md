@@ -1,13 +1,12 @@
-Cover photo by <a href="https://unsplash.com/@anikeevxo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Vladimir Anikeev</a> on <a href="https://unsplash.com/photos/white-sky-photography-IM8ZyYaSW6g?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-
-Photo by <a href="https://unsplash.com/@henry_be?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Henry Be</a> on <a href="https://unsplash.com/photos/orange-flowers-IicyiaPYGGI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-  
 # [Blogo](https://blogo.vercel.app/)
 A blog website used for editing and sharing GitHub issue articles.
+( using [facebook/react repository](https://github.com/facebook/react/issues) as an example )
+<img width="644" alt="image" src="https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/0114abde-0c87-408a-bb20-4a9ca9ce9c08">
 
 - Framework - [Next.js 14](https://nextjs.org/) with [App Router](https://nextjs.org/docs#app-router-vs-pages-router)
 - Language - [TypeScript](https://www.typescriptlang.org/)
 - Styling - [Tailwind CSS](https://tailwindcss.com/)
+Cover photo by <a href="https://unsplash.com/@anikeevxo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Vladimir Anikeev</a> on <a href="https://unsplash.com/photos/white-sky-photography-IM8ZyYaSW6g?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
 
 ## Overview
 1. [Features](#features)
@@ -47,37 +46,87 @@ A blog website used for editing and sharing GitHub issue articles.
 ## How to Use
 ### Vercel App
 Blogo has been deployed on [https://blogo.vercel.app/](https://blogo.vercel.app/)
+( using [facebook/react repository](https://github.com/facebook/react/issues) as an example )
 ### On your computer
-0. Your computer should have downloaded Node.js before（Node >= 14.0.0 and npm >= 5.6）
-1. Download this repository via ```git clone```
+0. Please install [Node.js](https://nodejs.org/en/) before launching the project
+1. ```git clone``` to download this repository
 2. Register a new OAuth application to get your own client id and secret [here](https://github.com/settings/applications/new)
-    - Please set **Homepage URL** and **Authorization callback URL** to ```https://127.0.0.1:3000/```
-3. Set necessary enviroment variables:
+    - please set **Homepage URL** and **Authorization callback URL** to ```https://127.0.0.1:3000/```
+      ( GitHub official documentation recommends using '127.0.0.1' over 'localhost'. )
+3. Set necessary environment variables:
     - add a new ```.env.local``` file under root directory
-    - add enviroment variables:
+    - add following environment variables:
    ```
+   NEXT_PUBLIC_USER={your_github_username}
+   NEXT_PUBLIC_REPO={your_blog_repo}
    NEXT_PUBLIC_GITHUB_CLIENT_ID={your_client_id}
    GITHUB_CLIENT_ID={your_client_id}
    GITHUB_CLIENT_SECRET={your_client_secret}
    ```
-4. run following commands under this repository 
+4. Run following commands under this repository 
     ```
     npm install
     npm run build
     ```
+5. Open "https://127.0.0.1:3000/" on browser
+   (please remind that ```localhost``` is different from ```127.0.0.1```)
 ## Architecture Design
-### app/
-#### app/api/
-#### app/page.js
-#### app/repos/
-#### app/createIssue/
+Grouping by file type
+- [components/](#components)
+- [containers/](#containers)
+- [app/](#app)
 
 ### components/
-#### issueForm
-#### listElement
-#### navbar
-#### noPermission
+打包多個頁面都會用到的元素，以利重複使用
+#### [navbar](./components/navbar.tsx)
+#### [issueForm](./components/issueForm.tsx)
+編輯及新增issue的表單（包含表單驗證）
+#### [listElement](./components/listElement.tsx)
+列表頁使用的元素，呈現issue標題、內文預覽及留言數
+#### [noPermission](./components/noPermission.tsx)
+部分功能需要確認使用者權限，如使用者未登入或登入後未開啟權限，會顯示此畫面
+### containers/
+#### [containers/hook/](./containers/hook/)
+- [useToken](./containers/hook/useToken.tsx)
+  - GitHub OAuth登入
+  - user token驗證權限
+  - 儲存、更新使用者資訊
+  - 提供使用者資訊context給其他頁面
+- [useParallax](./containers/hook/useParallax.tsx)
+  - 使用[react-scroll-parallax](https://react-scroll-parallax.damnthat.tv/docs/intro)套件，目前僅於首頁使用
+#### [containers/issueList](./containers/issueList.tsx)
+處理issues列表頁面的邏輯，包含api串接以及infinite scrolling
 
-### containers/hook/
+### app/
+```
+├── page.tsx （首頁，呈現部落格文章列表）
+├── api
+├── createIssue
+├── repos
+```
+#### app/api/
+處理所有串接GitHub API的邏輯，以及免於將client secret暴露在瀏覽器中
+```
+├── api
+│   ├── issue
+│   ├── issueList
+│   ├── login
+│   ├── repo
+│   └── token
+```
+#### app/repos/
+```
+├── repos
+│   ├── [repo]
+│   │   ├── [issue_number]
+│   │   │   ├── page.tsx
+│   │   │   └── updateIssue
+│   │   │       └── page.tsx
+│   │   └── page.tsx
+│   └── page.tsx
+```
+#### app/createIssue/
+
+
 
 
