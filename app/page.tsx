@@ -4,11 +4,11 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useCallback } from "react";
 import { useToken } from "@/containers/hook/useToken";
 import IssueList from "@/containers/issueList";
-import { editIcon } from "@/components/icon";
 import { Parallax } from "react-scroll-parallax";
 import Image from "next/image";
 
-const repo = "react", owner = "facebook";
+const repo = process.env.NEXT_PUBLIC_REPO?.toLowerCase() || "facebook"
+      , owner = process.env.NEXT_PUBLIC_USER?.toLowerCase() || "react";
 
 export default function Home() {
   
@@ -40,11 +40,6 @@ export default function Home() {
     <main className="container pt-32 gap-3 md:gap-4 md:pt-52 ">
         <IssueList owner={owner} repo={repo}/>
     </main>
-    {/* <a className="fixed w-[60px] h-[60px] bottom-[50px] right-[50px] rounded-full \
-                  z-[2] bg-slate-200 flex items-center justify-center" 
-            href="/createIssue">
-      {editIcon}
-    </a> */}
     </>
   );
 }

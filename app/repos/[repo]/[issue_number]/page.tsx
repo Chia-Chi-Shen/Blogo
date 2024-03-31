@@ -5,6 +5,7 @@ import parse from "html-react-parser";
 import { useToken } from "@/containers/hook/useToken";
 import { editIcon, deleteIcon, commentIcon } from "@/components/icon";
 import Link from "next/link";
+import { getIssue, deleteIssue } from "@/app/api/issue";
 
 type Issue = {
     title: string, 
@@ -44,15 +45,12 @@ export default function Page({ params }: { params: { repo: string, issue_number:
             tooltip.style.visibility = "hidden";
         }
 
-        const getIssue = async () => {
-            // if no owner and repo specified, use default
-            const res = await fetch(`/api/issue?issue_number=${params.issue_number}&owner=${owner}&repo=${repo}&parse=true`,
-                                    { headers: {"authorization": token } });
-            const { issue, comments } = await res.json();
+        const renderIssue = async () => {
+            const { issue, comments } = await getIssue(owner, repo, true, Number(params.issue_number), token);
             setIssue(issue);
             setComments(comments);
         } 
-        getIssue();  
+        renderIssue();  
     }
     ,[]);
 
@@ -70,15 +68,8 @@ export default function Page({ params }: { params: { repo: string, issue_number:
         }
     }
 
-    const deleteIssue = async() => {
-        const result = await fetch(
-            `/api/issue?owner=${owner}&repo=${repo}&issue_number=${params.issue_number}`, {
-            method: 'DELETE',
-            headers: {
-                'authorization': token
-            }
-        });
-        const number = await result.json();
+    const closeIssue = async() => {
+        await deleteIssue(owner, repo, Number(params.issue_number), token);
         router.push("/repos/"+repo);
     }
 
@@ -115,7 +106,7 @@ export default function Page({ params }: { params: { repo: string, issue_number:
                         >{editIcon}</Link>
                     
                     <button 
-                        onClick={deleteIssue}
+                        onClick={closeIssue}
                         onMouseOver={showTooltip}
                         onMouseOut={hideTooltip}
                         className="delete-btn px-2 text-[--primary]"

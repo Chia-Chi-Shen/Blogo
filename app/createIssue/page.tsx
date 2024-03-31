@@ -4,24 +4,19 @@ import { useState, useEffect } from "react";
 import { useToken } from "@/containers/hook/useToken";
 import { useRouter, useSearchParams } from "next/navigation";
 import IssueForm from "@/components/issueForm";
+import { postIssue } from "../api/issue";
+import { getRepoList } from "../api/repoList";
 
 export default function CreateIssue() {
     const { token, user } = useToken();
     const [options, setOptions] = useState([] as string[]);
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const owner = searchParams.get('owner')?? "chia-chi-shen";
+    const owner = user.toLowerCase();
 
+    // get repo list for options
     const getRepos = async () => {
-        const res = await fetch(`/api/repo?user=${owner}`,{
-            method: 'GET',
-            headers: {
-                'authorization': token
-            }
-        });
-        const {user: {repositories}} = await res.json();
-        setOptions(repositories.nodes
-                                .map((repo: {name: string}) => repo.name));
+        const res = await getRepoList(owner, token);
+        setOptions(res);
     }
     useEffect(() => {
         if (token)
@@ -31,17 +26,13 @@ export default function CreateIssue() {
     const submit = async(title: string, 
                          body: string, 
                          repo?: string) => {
-        const result = await fetch(`/api/issue?owner=${owner}&repo=${repo}`, {
-            method: 'POST',
-            headers: {
-                'authorization': token
-            },
-            body: JSON.stringify({ title, body })
-        });
-        const number = await result.json();
+        if (repo)
+        {
+            const number = await postIssue(title, body, owner, repo, token);
 
-        // redirect to issue page
-        router.replace(`repos/${repo}/${number}?owner=${owner}`);
+            // redirect to issue page
+            router.replace(`repos/${repo}/${number}?owner=${owner}`);
+        }
     }
 
 return (
