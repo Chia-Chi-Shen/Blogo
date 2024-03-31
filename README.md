@@ -1,6 +1,6 @@
-# [Blogo](https://blogo.vercel.app/)
+# [Blogo](https://blogo.vercel.app/) 
 A blog website used for editing and sharing GitHub issue articles.<br/>
-( using [facebook/react](https://github.com/facebook/react/issues) repository as an example )
+( using [facebook/react](https://github.com/facebook/react/issues) repository as an example ) <br/>
 <img width="644" alt="image" src="https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/0114abde-0c87-408a-bb20-4a9ca9ce9c08">
 
 - Framework - [Next.js 14](https://nextjs.org/) with [App Router](https://nextjs.org/docs#app-router-vs-pages-router)
@@ -78,7 +78,7 @@ Grouping by file type
 
 ### 📁components/
 打包多個頁面都會用到的元素，以利重複使用
-#### [navbar](./components/navbar.tsx)
+#### [navbar](./components/navbar.tsx), [footer](./components/footer.tsx)
 #### [issueForm](./components/issueForm.tsx)
 編輯及新增 issue 的表單（包含表單驗證）
 #### [listElement](./components/listElement.tsx)
@@ -96,7 +96,7 @@ Grouping by file type
   - 使用[react-scroll-parallax](https://react-scroll-parallax.damnthat.tv/docs/intro)套件，目前僅於首頁使用
 #### [issueList](./containers/issueList.tsx)
 處理issues列表頁面的邏輯，包含：
-- api串接：每次僅請求 10 則，並且**排除pull request及已經關閉的issues** （GitHub REST API 會將 PR 視為 issue 一同回傳）
+- api串接：每次僅請求 10 則，並且**排除 pull request 及已經關閉的 issues** （GitHub REST API 會將 PR 視為 issue 一同回傳）
 - infinite scrolling：滾到底部時才會載入額外 10 筆,直到沒有更多文章
 
 ### 📁app/
@@ -106,7 +106,7 @@ Grouping by file type
 ├── createIssue
 ├── repos
 ```
-#### api/
+#### [api/](./app/api/)
 處理所有串接 GitHub API 的邏輯，以及免於將 client secret 暴露在瀏覽器中
 ```
 ├── api
@@ -116,14 +116,14 @@ Grouping by file type
 │   ├── repo：取得使用者的 repos（使用 GitHub GraphQL API 以避免 over-fetching）
 │   └── token：確認 token 權限
 ```
-#### repos/
+#### [repos/](./app/repos/)
 ```
 ├── repos：使用者的所有 repositories 列表
 │   ├── [repo]：指定 repo 的 issues 列表
 │   │   ├── [issue_number]：指定 repo 中的特定 issue 頁面
 │   │   │   └── updateIssue：指定 issue 的編輯畫面
 ```
-#### createIssue/
+#### [createIssue/](./app/createIssue/)
 使用者新增 issue 的頁面
 
 
