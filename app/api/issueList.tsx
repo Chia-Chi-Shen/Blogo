@@ -1,14 +1,8 @@
 import { Octokit } from "octokit";
-import { cookies } from 'next/headers'
 
 
+export const getIssueList = async (repo:string, page:string, token?:string) => {
 
-export const GET = async (request: Request) => {
-  const { searchParams } = new URL(request.url);
-  const repo = searchParams.get("repo")?? "chia-chi-shen/test";
-  const page = searchParams.get("page");
-
-  const token = request.headers.get('authorization');
   const octokit = new Octokit({ auth: token });
   
   if (!repo) 
@@ -37,7 +31,7 @@ export const GET = async (request: Request) => {
     const nextUrl = linkHeader?.match(nextPattern)?.[0] ?? "";
     const isEnd = nextUrl==="";
 
-    return Response.json({ issues,  isEnd });
+    return ({ issues,  isEnd });
   
   } catch (error: any) {
     console.log(`Error! Status: ${error.status}. Message: ${error.response.data.message}`)

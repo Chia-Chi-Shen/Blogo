@@ -3,30 +3,20 @@ import { useEffect, useState } from "react"
 import { useToken } from "@/containers/hook/useToken";
 import ListElement from "@/components/listElement";
 import NoPermission from "@/components/noPermission";
-
-interface Repo {
-    name: string;
-}
+import { getRepoList } from "../api/repoList";
 
 export default function Repos() {
     const { token, user, tokenScope } = useToken();
-    const [repos, setRepos] = useState([] as Repo[]);
+    const [repos, setRepos] = useState([] as string[]);
 
-    const getRepos = async () => {
-        const res = await fetch(`/api/repo?user=${user}`,{
-            method: 'GET',
-            headers: {
-                'authorization': token
-            }
-        });
-        const {user: {repositories}} = await res.json();
-        setRepos(repositories.nodes);
-        console.log(repositories.nodes);
+    const renderRepoList = async () => {
+        const res = await getRepoList(user, token);
+        setRepos(res);
     }
 
     useEffect(() => {
         if (user && token)
-            getRepos();
+            renderRepoList();
     }, [user])
 
     if (tokenScope === "repo")
@@ -37,7 +27,7 @@ export default function Repos() {
             {
             (repos.length !== 0) ?
             repos.map((repo, index) => 
-                <ListElement key={index} title={repo.name} link={`/repos/${repo.name}`} number={index+1}
+                <ListElement key={index} title={repo} link={`/repos/${repo}`} number={index+1}
                             body={null} comments={null} updated_at={null}/>)
                 : <></>
             }

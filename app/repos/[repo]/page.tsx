@@ -1,7 +1,6 @@
 'use client'
 import IssueList from "@/containers/issueList";
 import { useToken } from "@/containers/hook/useToken";
-import { editIcon } from "@/components/icon";
 
 export default function Repo({ params }: { params: { repo: string }}) {
   

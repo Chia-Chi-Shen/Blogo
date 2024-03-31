@@ -2,49 +2,43 @@
 
 'use client'
 import { useToken } from "@/containers/hook/useToken";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import IssueForm from "@/components/issueForm";
+import { patchIssue, getIssue } from "@/app/api/issue";
 
-export default function UpdateIssue({ params }: { params: { repo_name: string, issue_number: string } }) {
+export default function UpdateIssue({ params }: { params: { repo: string, issue_number: string } }) {
     const [issue, setIssue] = useState({title: "", body: ""});
     const { token, user } = useToken();
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const owner = searchParams.get('owner')?? "chia-chi-shen";
-    const repository = params.repo_name;
+    const owner = user.toLowerCase();
+    const repository = params.repo;
 
     useEffect(() => {
-        const getIssue = async () => {
-            const res = await fetch(
-                `/api/issue?issue_number=${params.issue_number}&owner=${owner}&repo=${repository}`,{
-                    headers: { 'authorization': token }
-            });
-            const { issue } = await res.json();
+        const renderIssue = async () => {
+            const { issue } = await getIssue(owner, repository, false, Number(params.issue_number), token);
             setIssue(issue);
         }
         if (token)
-            getIssue();
+            renderIssue();
     },[token]);
 
     const submit = async(title: string,
                             body: string,
                             repo=repository) => {
-        const result = await fetch(`/api/issue?owner=${owner}&repo=${repo}&issue_number=${params.issue_number}`, {
-            method: 'PATCH',
-            headers: {
-                'authorization': token
-            },
-            body: JSON.stringify({ title, body })
-        });
-        const number = await result.json();
 
+        const number = await patchIssue(title, body, owner, repo, Number(params.issue_number), token);
         // redirect to issue page
         router.back();
     }
 
     
 
-return <IssueForm submit={submit} issue={issue} setIssue={setIssue} options={null}/>;
+return (
+    <div className="container">
+        <h1 className="text-2xl text-bold">Edit Issue</h1>
+        <IssueForm submit={submit} issue={issue} setIssue={setIssue} options={null}/>
+    </div>
+)
 
 }

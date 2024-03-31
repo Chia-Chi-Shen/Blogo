@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ListElement from "@/components/listElement";
 import { useToken } from "./hook/useToken";
+import { getIssueList } from "@/app/api/issueList";
 
 interface IssueListProps {
     owner: string;
@@ -22,18 +23,15 @@ export default function IssueList({ owner, repo }: IssueListProps) {
     const [page, setPage] = useState(1);
     const { token } = useToken();
 
-    const getIssues = async (page:number) => {
-        const res = await fetch(`/api/issueList?page=${page}&repo=${owner.toLowerCase()}/${repo}`,
-                                { headers: {"authorization": token } }   );
-        const { issues, isEnd } = await res.json();
-
+    const renderIssueList = async (page:number) => {
+        const { issues, isEnd } = await getIssueList(`${owner.toLowerCase()}/${repo}`, page.toString(), token);
         setIsEnd(isEnd);
         setIssues(prev => [...prev, ...issues])
         setPage(prev => prev + 1);
     }
 
     useEffect(() => {
-        getIssues(page);
+        renderIssueList(page);
     }, []);
 
     useEffect(() => {
@@ -41,7 +39,7 @@ export default function IssueList({ owner, repo }: IssueListProps) {
         if (window.innerHeight + document.documentElement.scrollTop === 
           document.documentElement.offsetHeight) {
             if (!isEnd)
-            getIssues(page);
+            renderIssueList(page);
         }
         };
   

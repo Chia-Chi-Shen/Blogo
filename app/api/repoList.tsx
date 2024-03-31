@@ -1,14 +1,16 @@
-import { Octokit } from "octokit"
 import { graphql } from "@octokit/graphql"
 
-export const GET = async(request: Request) => {
-    const { searchParams } = new URL(request.url);
+type Response = {
+  user: {
+    repositories: {
+      nodes: {
+        name: string
+      }[]
+    }
+  }
+}
 
-    const token = request.headers.get('authorization');
-    const user = searchParams.get('user')?.toLowerCase();
-    
-    if (!token) 
-        return new Response("Unauthorized", { status: 401 });
+export const getRepoList = async(user:string, token:string) => {
 
     const graphqlWithAuth = graphql.defaults({
         headers: {
@@ -16,7 +18,7 @@ export const GET = async(request: Request) => {
         },
         });
     
-    const response = await graphqlWithAuth(
+    const response:Response = await graphqlWithAuth(
         `
         query {
             user(login: "${user}") {
@@ -29,5 +31,6 @@ export const GET = async(request: Request) => {
           }
         `,
       );
-    return Response.json(response);
+    const repoList = response.user.repositories.nodes.map((repo) => repo.name);
+    return repoList;
 }
