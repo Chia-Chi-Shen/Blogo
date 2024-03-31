@@ -53,8 +53,8 @@ const IssueForm  = ({ submit, setIssue, issue, options } :
     }, [open])
 
     return (
-        <div className="container">
-        <h1 className="text-2xl text-bold">{options? "New Issue":"Edit Issue"}</h1>
+        <>
+        
         <form className="w-full flex flex-col my-10">
             <div className="w-full flex gap-7 justify-between">
             {/* Title */}
@@ -96,7 +96,7 @@ const IssueForm  = ({ submit, setIssue, issue, options } :
         </form>
         
         <button className="rounded py-2 px-4 bg-slate-300 hover:bg-[--primary] hover:text-white" onClick={validateSubmit}>Submit</button>
-        </div>
+        </>
     )
 }
 

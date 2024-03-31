@@ -44,6 +44,11 @@ export default function CreateIssue() {
         router.replace(`repos/${repo}/${number}?owner=${owner}`);
     }
 
-return <IssueForm submit={submit} issue={null} setIssue={null} options={options}/>
+return (
+    <div className="container">
+        <h1 className="text-2xl text-bold">New Issue</h1>
+        <IssueForm submit={submit} issue={null} setIssue={null} options={options}/>
+    </div>
+)
 
 }

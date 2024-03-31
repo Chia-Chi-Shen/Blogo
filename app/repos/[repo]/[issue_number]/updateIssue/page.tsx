@@ -45,6 +45,11 @@ export default function UpdateIssue({ params }: { params: { repo_name: string, i
 
     
 
-return <IssueForm submit={submit} issue={issue} setIssue={setIssue} options={null}/>;
+return (
+    <div className="container">
+        <h1 className="text-2xl text-bold">Edit Issue</h1>
+        <IssueForm submit={submit} issue={issue} setIssue={setIssue} options={null}/>
+    </div>
+)
 
 }
