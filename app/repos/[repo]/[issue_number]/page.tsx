@@ -143,13 +143,13 @@ export default function Page({ params }: { params: { repo: string, issue_number:
                 No comments yet
             </div>
             :
-            <div className="bg-white/90 rounded">
+            <div className="bg-white/90 rounded w-full">
             {comments.map((comment:Comment, index:number) => (
                 <div key={index} className="w-full px-3 py-1 border-b">
                     <div className="flex justify-between items-center mt-1">
                         <div className="font-semibold">{comment.user}</div>
-                        <div className="text-slate-400 text-xs">
-                            {new Date(comment.updated_at).toLocaleString()}</div>
+                        <div className="text-slate-400 text-xs font-light">
+                            {new Date(comment.updated_at).toLocaleString().toLowerCase()}</div>
                     </div>
                     <p className="w-full ">{comment.body}</p>
                 </div>
