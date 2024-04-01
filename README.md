@@ -42,6 +42,8 @@ A blog website used for editing and sharing GitHub issue articles.<br/>
 - ```avoiding resubmission```:  送出後自動跳轉至該文章內頁，再按上一頁即返回文章列表，避免重複送出表單
 #### Navbar
 - 頁面下滑自動縮小，擴增視野
+#### RWD 📱
+- 使用行動裝置也能正常顯示
 
 ## How to Use 💡
 ### Vercel App
