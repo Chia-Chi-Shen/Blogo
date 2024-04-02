@@ -34,8 +34,8 @@ export default function Home() {
           <Image className="invisible max-h-[30px] md:visible" src="/images/blogo.png" width={30} height={30} alt="blogo"/>
         </div>
       </Parallax>
-      <div className="absolute w-full h-full bg-[url('/images/home-header.jpg')] bg-cover bg-center opacity-60">
-      </div>
+      <Image src='/images/home-header.jpeg' className="absolute w-full h-full opacity-60" alt=""
+              fill priority objectFit="cover"/>
     </header>
     <main className="container pt-32 gap-3 md:gap-4 md:pt-52 ">
         <IssueList owner={owner} repo={repo}/>
