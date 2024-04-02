@@ -20,6 +20,7 @@ export const getIssue =  async (owner:string, repo:string, parse:boolean, issue_
       })
     // console.log(issueResult);
 
+    // parse markdown to html
     let issueBody = "";
     if (issueResult.body) {
         if (parse) {

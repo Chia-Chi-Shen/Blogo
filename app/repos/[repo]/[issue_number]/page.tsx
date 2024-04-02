@@ -6,6 +6,7 @@ import { useToken } from "@/containers/hook/useToken";
 import { editIcon, deleteIcon, commentIcon } from "@/components/icon";
 import Link from "next/link";
 import { getIssue, deleteIssue } from "@/app/api/issue";
+import Comment from "@/components/comment";
 
 type Issue = {
     title: string, 
@@ -132,7 +133,7 @@ export default function Page({ params }: { params: { repo: string, issue_number:
             }
             
             {/* issue comments */}
-            <div className="flex gap-4 text-[--primary] self-start items-center mb-3 mt-5">
+            <div className="flex gap-4 text-[--primary] self-start items-center mb-4 mt-5">
             <h2 className="text-[--primary] m-0"
                 >Comments</h2>
             {commentIcon}
@@ -144,16 +145,9 @@ export default function Page({ params }: { params: { repo: string, issue_number:
             </div>
             :
             <div className="bg-white/90 rounded w-full">
-            {comments.map((comment:Comment, index:number) => (
-                <div key={index} className="w-full px-3 py-1 border-b">
-                    <div className="flex justify-between items-center mt-1">
-                        <div className="font-semibold">{comment.user}</div>
-                        <div className="text-slate-400 text-xs font-light">
-                            {new Date(comment.updated_at).toLocaleString().toLowerCase()}</div>
-                    </div>
-                    <p className="w-full ">{comment.body}</p>
-                </div>
-            ))}
+            {comments.map((comment:Comment, index:number) => 
+                <Comment key={index} comment={comment} />
+            )}
             </div>
             }
         </div></div>

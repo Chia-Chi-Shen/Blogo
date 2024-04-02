@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { commentIcon } from './icon';
 import { comment } from 'postcss';
 
-interface ListElementProps {
+type ListElementProps = {
     title: string;
     body: string|null;
     // repo: string;

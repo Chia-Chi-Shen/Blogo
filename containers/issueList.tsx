@@ -5,7 +5,7 @@ import ListElement from "@/components/listElement";
 import { useToken } from "./hook/useToken";
 import { getIssueList } from "@/app/api/issueList";
 
-interface IssueListProps {
+type IssueListProps = {
     owner: string;
     repo: string;
 }
