@@ -15,6 +15,7 @@ A blog website used for editing and sharing GitHub issue articles.<br/>
     - [User Interface](#user-interface)
 2. [How to use](#how-to-use-) 💡
 3. [Architecture Design](#architecture-design) 🗂️
+4. [Web Vitals](#web-vitals)
 
 ## Features 🔧
 ### GitHub Login
@@ -128,6 +129,6 @@ Grouping by file type
 #### [createIssue/](./app/createIssue/)
 使用者新增 issue 的頁面
 
-
-
-
+## Web Vitals
+<img width="505" alt="web vitals screenshot" src="https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/b5294b17-0ef4-477c-a155-c604b42b7bbb">
+provided by [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-blogo-vercel-app/b5jvvdz2vh?form_factor=desktop)
