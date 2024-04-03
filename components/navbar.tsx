@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToken } from "@/containers/hook/useToken";
 import Link from "next/link";
+import githubIcon from "../public/images/github-icon.png";
+import Image from "next/image";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
@@ -91,7 +93,7 @@ const Navbar = () => {
                 <button onClick={loginWithGithub} 
                         className="text-[--primary] text-sm font-light \"
                         >Login with Github</button>
-                <img src="/images/github-icon.png" className="w-6 h-6 rounded-full"/>
+                <Image src={githubIcon} className="w-6 h-6 rounded-full" alt=""/>
                 </div>
             }
             </div></div>

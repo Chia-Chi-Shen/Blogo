@@ -6,6 +6,7 @@ import { useToken } from "@/containers/hook/useToken";
 import IssueList from "@/containers/issueList";
 import { Parallax } from "react-scroll-parallax";
 import Image from "next/image";
+import headerImage from "../public/images/home-header.jpeg";
 
 const repo = process.env.NEXT_PUBLIC_REPO?.toLowerCase() || "react"
       , owner = process.env.NEXT_PUBLIC_USER?.toLowerCase() || "facebook";
@@ -21,7 +22,6 @@ export default function Home() {
       setCode(code);
   },[]);
 
-  //'/images/home-header.jpg'
 
   return (
     <>
@@ -34,8 +34,8 @@ export default function Home() {
           <Image className="invisible max-h-[30px] md:visible" src="/images/blogo.png" width={30} height={30} alt="blogo"/>
         </div>
       </Parallax>
-      <Image src='/images/home-header.jpeg' className="absolute w-full h-full opacity-60" alt=""
-              fill priority objectFit="cover"/>
+      <Image src={headerImage} className="absolute w-full h-full opacity-60" alt=""
+              fill priority style={{objectFit:"cover"}}/>
     </header>
     <main className="container pt-32 gap-3 md:gap-4 md:pt-52 ">
         <IssueList owner={owner} repo={repo}/>
