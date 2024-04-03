@@ -69,8 +69,10 @@ const Navbar = () => {
         <nav className={`navbar m-0 px-4 md:px-20 bg-[transparent] w-full sticky top-0 flex \
                          justify-center z-[3] transition-[top]`}>
             <div className="w-full flex justify-end items-center gap-2">
-            <div className="logo w-7 h-7 bg-contain bg-no-repeat my-3 bg-center bg-[url('/images/blogo.png')]">
-                <Link href="/" className="inline-block w-full h-full"/>
+            <div className="logo w-7 h-7 bg-contain bg-no-repeat my-3 bg-center ">
+                <Link href="/" className="inline-block w-full h-full relative">
+                <Image src="/images/blogo.png" alt="Blogo" fill style={{objectFit:"contain"}}/>
+                </Link>
             </div>
             <div className="flex justify-end gap-x-9 items-center user-bar rounded-full px-3 \
                              py-2 transition duration-300">
