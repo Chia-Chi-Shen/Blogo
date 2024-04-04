@@ -7,6 +7,7 @@ import { editIcon, deleteIcon, commentIcon } from "@/components/icon";
 import Link from "next/link";
 import { getIssue, deleteIssue } from "@/app/api/issue";
 import Comment from "@/components/comment";
+import Error from "@/components/error";
 
 type Issue = {
     title: string, 
@@ -25,6 +26,7 @@ export default function Page({ params }: { params: { repo: string, issue_number:
     
     const [issue, setIssue] = useState({title: "", body: "", updated_at: ""} as Issue);
     const [comments, setComments] = useState([] as Comment[]);
+    const [status, setStatus] = useState<number|null>(200);
     const router = useRouter();
     const pathName = usePathname();
     const searchParams = useSearchParams();
@@ -47,9 +49,19 @@ export default function Page({ params }: { params: { repo: string, issue_number:
         }
 
         const renderIssue = async () => {
-            const { issue, comments } = await getIssue(owner, repo, true, Number(params.issue_number), token);
-            setIssue(issue);
-            setComments(comments);
+            try {
+                const { issue, comments, status } = await getIssue(owner, repo, true, Number(params.issue_number), token);
+                if (status == 200 && issue && comments) {
+                    setIssue(issue);
+                    setComments(comments);
+                }
+                else {
+                    setStatus(status);
+                }   
+            } catch (error) {
+                console.error('Error getting issue:', error);
+                setStatus(null);
+            }
         } 
         renderIssue();  
     }
@@ -72,6 +84,10 @@ export default function Page({ params }: { params: { repo: string, issue_number:
     const closeIssue = async() => {
         await deleteIssue(owner, repo, Number(params.issue_number), token);
         router.push("/repos/"+repo);
+    }
+
+    if (status !== 200) {
+        return <Error status={status} />
     }
 
     return (

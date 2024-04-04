@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useToken } from "@/containers/hook/useToken";
 import Link from "next/link";
 import githubIcon from "../public/images/github-icon.png";
@@ -64,6 +64,7 @@ const Navbar = () => {
     }, false);
     }, [])
 
+
     return (
         <>
         <nav className={`navbar m-0 px-4 md:px-20 bg-[transparent] w-full sticky top-0 flex \
@@ -103,14 +104,14 @@ const Navbar = () => {
         <div className="user-func fixed right-4 md:right-24 top-16 flex flex-col gap-3 \
                          items-center rounded bg-white shadow p-1 z-[10]">
                 <Link href={`/repos?user=${user}`} 
-                    className="p-2 text-[--primary] hover:bg-[--primary-light]">My Repo</Link>
+                    className="p-2 text-[--primary] hover:bg-[--primary-light]"
+                    onClick={() => setIsFuncOpen(false)}>My Repo</Link>
                 <Link href="/createIssue" 
-                    className="p-2 text-[--primary] hover:bg-[--primary-light]">New Post</Link>
+                    className="p-2 text-[--primary] hover:bg-[--primary-light]"
+                    onClick={() => setIsFuncOpen(false)}>New Post</Link>
                 <Link href="/" 
                     className="p-2 text-[--primary] hover:bg-[--primary-light]"
                     onClick={logout}>Logout</Link>
-                {/* <div className="absolute w-screen h-screen z-[2]"
-                     onClick={() =>setIsFuncOpen(false)}/> */}
         </div>
         </>
     )

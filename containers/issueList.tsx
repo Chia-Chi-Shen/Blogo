@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import ListElement from "@/components/listElement";
 import { useToken } from "./hook/useToken";
 import { getIssueList } from "@/app/api/issueList";
+import Error from "@/components/error";
 
 type IssueListProps = {
     owner: string;
@@ -21,13 +22,19 @@ export default function IssueList({ owner, repo }: IssueListProps) {
     const [issues, setIssues] = useState([] as issueElement[]);
     const [isEnd, setIsEnd] = useState(false);
     const [page, setPage] = useState(1);
+    const [status, setStatus] = useState<number|null>(200);
     const { token } = useToken();
 
     const renderIssueList = async (page:number) => {
-        const { issues, isEnd } = await getIssueList(`${owner.toLowerCase()}/${repo}`, page.toString(), token);
-        setIsEnd(isEnd);
-        setIssues(prev => [...prev, ...issues])
-        setPage(prev => prev + 1);
+        const { issues, isEnd, status } = await getIssueList(`${owner.toLowerCase()}/${repo}`, page.toString(), token);
+        if (status == 200) {
+            setIsEnd(isEnd);
+            setIssues(prev => [...prev, ...issues])
+            setPage(prev => prev + 1);
+        }
+        else
+            setStatus(status);
+        
     }
 
     useEffect(() => {
@@ -46,6 +53,10 @@ export default function IssueList({ owner, repo }: IssueListProps) {
       window.addEventListener('scroll', handleScroll);
       return () => window.removeEventListener('scroll', handleScroll);
     }, [isEnd, page]);
+
+    if (status !== 200) {
+        return <Error status={status} />
+    }
 
     return(
         <>

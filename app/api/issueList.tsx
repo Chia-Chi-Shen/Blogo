@@ -1,12 +1,11 @@
 import { Octokit } from "octokit";
+import { RequestError } from "@octokit/request-error";
 
 
 export const getIssueList = async (repo:string, page:string, token?:string) => {
 
   const octokit = new Octokit({ auth: token });
   
-  if (!repo) 
-      return Response.json({ error: "repo is required" });
   const q = encodeURIComponent(`repo:${repo} is:open is:issue`);
   let url = `https://api.github.com/search/issues?q=${q}&sort=created&per_page=10&page=${page}`
 
@@ -31,10 +30,15 @@ export const getIssueList = async (repo:string, page:string, token?:string) => {
     const nextUrl = linkHeader?.match(nextPattern)?.[0] ?? "";
     const isEnd = nextUrl==="";
 
-    return ({ issues,  isEnd });
+    return ({ issues,  isEnd, status: 200});
   
-  } catch (error: any) {
-    console.log(`Error! Status: ${error.status}. Message: ${error.response.data.message}`)
-    return error;
+  } catch (error) {
+    if (error instanceof RequestError) {
+      console.error('Error getting issue:', error);
+      return { issues: [], isEnd: true, status: error.response?.status || null };
+    }
+    else {
+      throw error;
+    }
   }
 };

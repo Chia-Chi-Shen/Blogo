@@ -23,7 +23,7 @@ export default function Repos() {
     return (
         <div className="container">
             <h1 className="w-full text-4xl font-bold mb-12 text-[--primary] text-left">My Repositories</h1>
-            <div className="grid grid-cols-2 gap-4 w-full">
+            <div className="grid md:grid-cols-2 gap-4 w-full">
             {
             (repos.length !== 0) ?
             repos.map((repo, index) => 
