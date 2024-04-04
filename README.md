@@ -45,6 +45,9 @@ A blog website used for editing and sharing GitHub issue articles.<br/>
 - 頁面下滑自動縮小，擴增視野
 #### RWD 📱
 - 使用行動裝置也能正常顯示
+#### Skeleton Loader
+![ScreenRecording2024-04-04at11 56 22AM-ezgif com-video-to-gif-converter](https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/08f00d60-01dc-4064-9519-dc325f3a0371)
+
 
 ## How to Use 💡
 ### Vercel App
