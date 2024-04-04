@@ -133,5 +133,5 @@ Grouping by file type
 使用者新增 issue 的頁面
 
 ## Web Vitals
-<img width="505" alt="web vitals screenshot" src="https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/b5294b17-0ef4-477c-a155-c604b42b7bbb">
-<br/>provided by [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-blogo-vercel-app/b5jvvdz2vh?form_factor=desktop)
+<img width="505" alt="web vitals screenshot" src="https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/b5294b17-0ef4-477c-a155-c604b42b7bbb"/>
+<br/>provided by [PageSpeed Insights](https://support.apple.com/zh-tw/102646)
