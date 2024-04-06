@@ -15,6 +15,7 @@ A blog website used for editing and sharing GitHub issue articles.<br/>
     - [User Interface](#user-interface)
 2. [How to use](#how-to-use-) 💡
 3. [Architecture Design](#architecture-design) 🗂️
+4. [Web Vitals](#web-vitals) 🪄
 
 ## Features 🔧
 ### GitHub Login
@@ -44,6 +45,9 @@ A blog website used for editing and sharing GitHub issue articles.<br/>
 - 頁面下滑自動縮小，擴增視野
 #### RWD 📱
 - 使用行動裝置也能正常顯示
+#### Skeleton Loader
+![ScreenRecording2024-04-04at11 56 22AM-ezgif com-video-to-gif-converter](https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/08f00d60-01dc-4064-9519-dc325f3a0371)
+
 
 ## How to Use 💡
 ### Vercel App
@@ -128,6 +132,6 @@ Grouping by file type
 #### [createIssue/](./app/createIssue/)
 使用者新增 issue 的頁面
 
-
-
-
+## Web Vitals
+<img width="505" alt="web vitals screenshot" src="https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/b5294b17-0ef4-477c-a155-c604b42b7bbb"/>
+<br/>provided by [PageSpeed Insights](https://support.apple.com/zh-tw/102646)
