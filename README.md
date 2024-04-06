@@ -91,6 +91,11 @@ Grouping by file type
 列表頁使用的元素，呈現 issue 標題、內文預覽及留言數
 #### [noPermission](./components/noPermission.tsx)
 部分功能需要確認使用者權限，如使用者未登入或登入後未開啟權限，會顯示此畫面
+#### [error](./components/error.tsx)
+出現錯誤時呈現status code及提醒訊息的畫面
+#### [comment](./components/comment.tsx)
+Issue 內頁呈現的留言元素
+
 ### 📁containers/
 #### [hook/](./containers/hook/)
 - [useToken](./containers/hook/useToken.tsx)
