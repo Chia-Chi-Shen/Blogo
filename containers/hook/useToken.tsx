@@ -1,7 +1,6 @@
 // containers/useToken.js
 'use client'
 import { useContext, createContext, useState, useEffect, useMemo } from "react";
-import { Octokit } from "@octokit/core";
 
 
 type TokenContextType = {
@@ -82,7 +81,6 @@ export const TokenProvider = ({children,}: Readonly<{children: React.ReactNode;}
         if (savedAvatar) {
             setAvatar(savedAvatar);
         }
-        console.log("render useToken");
     }, []);
 
     // set token in local storage, and create authorized Octokit

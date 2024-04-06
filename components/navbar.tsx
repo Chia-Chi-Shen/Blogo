@@ -23,7 +23,7 @@ const Navbar = () => {
 
     useEffect(() => {
         const userFunc = document.querySelector<HTMLElement>(".user-func");
-        console.log(isFuncOpen)
+        
         if (userFunc)
             userFunc.style.display = isFuncOpen? "": "none";
             
