@@ -21,7 +21,7 @@ Cover photo by <a href="https://unsplash.com/@anikeevxo?utm_content=creditCopyTe
 
 ## Features 🔧
 ### GitHub Login
-- 使用者以 GitHub 帳號登入，採用 [GitHub Oauth](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps) 驗證，以便使用 [GitHub REST API](https://docs.github.com/en/rest?apiVersion=2022-11-28)
+- 使用者以 GitHub 帳號登入，採用 [GitHub Oauth](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps) 驗證，以便使用 [GitHub REST API](https://docs.github.com/en/rest?apiVersion=2022-11-28) 及 [GitHub GraphQL API](https://docs.github.com/en/graphql)
 - 使用者登入時若無開放權限，將無法使用完整功能
 - 成功登入後使用者資訊記錄於```local storage```，毋須重複登入
 - 登出即可將資訊清除
@@ -77,9 +77,9 @@ Blogo has been deployed on [https://blogo.vercel.app/](https://blogo.vercel.app/
     npm run build
     ```
 5. Open "https://127.0.0.1:3000/" on browser
-   <br/>(please remind that ```localhost``` is different from ```127.0.0.1```)
+   <br/>(please note that ```localhost``` is different from ```127.0.0.1```)
 ## Architecture Design
-Grouping by file type
+Mainly grouping by file type
 - [components/](#components)
 - [containers/](#containers)
 - [app/](#app)
