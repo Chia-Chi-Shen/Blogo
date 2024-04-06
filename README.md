@@ -1,12 +1,14 @@
 # [Blogo](https://blogo.vercel.app/) 
-A blog website used for editing and sharing GitHub issue articles.<br/>
+#### A blog website used for editing and sharing GitHub issue articles.
+check it on [https://blogo.vercel.app/](https://blogo.vercel.app/) <br/>
 ( using [facebook/react](https://github.com/facebook/react/issues) repository as an example ) <br/>
 <img width="644" alt="image" src="https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/0114abde-0c87-408a-bb20-4a9ca9ce9c08">
 
 - Framework - [Next.js 14](https://nextjs.org/) with [App Router](https://nextjs.org/docs#app-router-vs-pages-router)
 - Language - [TypeScript](https://www.typescriptlang.org/)
 - Styling - [Tailwind CSS](https://tailwindcss.com/)
-<br/>Cover photo by <a href="https://unsplash.com/@anikeevxo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Vladimir Anikeev</a> on <a href="https://unsplash.com/photos/white-sky-photography-IM8ZyYaSW6g?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+<br/><br/>
+Cover photo by <a href="https://unsplash.com/@anikeevxo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Vladimir Anikeev</a> on <a href="https://unsplash.com/photos/white-sky-photography-IM8ZyYaSW6g?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
 
 ## Overview
 1. [Features](#features-) 🔧
