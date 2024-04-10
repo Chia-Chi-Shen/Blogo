@@ -141,4 +141,5 @@ Issue 內頁呈現的留言元素
 
 ## Web Vitals
 <img width="505" alt="web vitals screenshot" src="https://github.com/Chia-Chi-Shen/Blogo/assets/79575871/b5294b17-0ef4-477c-a155-c604b42b7bbb"/>
-<br/>provided by [PageSpeed Insights](https://support.apple.com/zh-tw/102646)
+<br/>
+provided by [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-blogo-vercel-app/wdof1e1i1e?form_factor=desktop)
